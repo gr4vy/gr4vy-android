@@ -1,6 +1,9 @@
 package com.gr4vy.android_sdk.web
 
+import com.gr4vy.android_sdk.models.CartItem
+import com.gr4vy.android_sdk.models.Gr4vyMetaData
 import com.gr4vy.android_sdk.models.Gr4vyResult
+import com.gr4vy.android_sdk.models.PaymentSource
 import junit.framework.TestCase
 import org.junit.Test
 
@@ -42,12 +45,70 @@ class MessageHandlerTest : TestCase() {
     fun testHandleMessageEncodesOptionalFieldsWhenNotNull() {
 
         val expectedExternalIdentifier = "expected-indentifier"
-        val expectedJsonToPost = "{\"type\":\"updateOptions\",\"data\":{\"apiHost\":\"api.config-instance.gr4vy.app\",\"apiUrl\":\"https://api.config-instance.gr4vy.app\",\"token\":\"token\",\"amount\":10873,\"country\":\"GB\",\"currency\":\"GBP\",\"buyerId\":\"buyerId\",\"externalIdentifier\":\"$expectedExternalIdentifier\"}}"
+        val expectedMetaDataKey = "meta-data-key"
+        val expectedMetaDataValue = "meta-data-value"
+        val expectedCartItemName = "cartItemName"
+        val expectedCartItemQuantity = 2
+        val expectedCartItemUnitAmount = 1
+        val expectedJsonToPost = "{" +
+                "\"type\":\"updateOptions\"," +
+                "\"data\":{" +
+                        "\"apiHost\":\"api.config-instance.gr4vy.app\"," +
+                        "\"apiUrl\":\"https://api.config-instance.gr4vy.app\"," +
+                        "\"token\":\"token\"," +
+                        "\"amount\":10873," +
+                        "\"country\":\"GB\"," +
+                        "\"currency\":\"GBP\"," +
+                        "\"buyerId\":\"buyerId\"," +
+                        "\"externalIdentifier\":\"$expectedExternalIdentifier\"," +
+                        "\"cartItems\":[" +
+                        "{\"name\":\"$expectedCartItemName\",\"quantity\":$expectedCartItemQuantity,\"unitAmount\":$expectedCartItemUnitAmount}" +
+                        "]," +
+                        "\"paymentSource\":\"installment\"," +
+                        "\"metadata\":{" +
+                            "\"$expectedMetaDataKey\":\"$expectedMetaDataValue\"" +
+                        "}" +
+                    "}" +
+                "}"
         val expectedJs = "window.postMessage($expectedJsonToPost)"
 
         val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
 
-        val messageHandler = MessageHandler(testParameters.copy(externalIdentifier = expectedExternalIdentifier))
+        val messageHandler = MessageHandler(testParameters.copy(
+            externalIdentifier = expectedExternalIdentifier,
+            paymentSource = PaymentSource.INSTALLMENT,
+            metadata = hashMapOf(expectedMetaDataKey to expectedMetaDataValue),
+            cartItems = listOf(CartItem(name = expectedCartItemName, quantity = expectedCartItemQuantity, unitAmount = expectedCartItemUnitAmount))
+        ))
+
+        val messageHandlerResult = messageHandler.handleMessage(message)
+
+        assert(messageHandlerResult is FrameReady)
+        assertEquals(expectedJs, (messageHandlerResult as FrameReady).js)
+    }
+
+    @Test
+    fun testHandleMessageEncodesPaymentSourceAsNullWhenNotSet() {
+
+        val expectedJsonToPost = "{" +
+                "\"type\":\"updateOptions\"," +
+                "\"data\":{" +
+                    "\"apiHost\":\"api.config-instance.gr4vy.app\"," +
+                    "\"apiUrl\":\"https://api.config-instance.gr4vy.app\"," +
+                    "\"token\":\"token\"," +
+                    "\"amount\":10873," +
+                    "\"country\":\"GB\"," +
+                    "\"currency\":\"GBP\"," +
+                    "\"buyerId\":\"buyerId\"" +
+                    "}" +
+                "}"
+        val expectedJs = "window.postMessage($expectedJsonToPost)"
+
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val messageHandler = MessageHandler(testParameters.copy(
+            paymentSource = PaymentSource.NOT_SET,
+        ))
 
         val messageHandlerResult = messageHandler.handleMessage(message)
 
@@ -135,8 +196,8 @@ class MessageHandlerTest : TestCase() {
                 " \"channel\": \"$expectedChannel\"," +
                 " \"data\": {" +
                         "\"status\": \"$expectedStatus\"," +
-                        "\"transactionID\": \"$expectedStatus\"," +
-                        "\"paymentMethodID\": \"$expectedStatus\"" +
+                        "\"transactionID\": \"\"," +
+                        "\"paymentMethodID\": \"\"" +
                     "}" +
             "}"
 

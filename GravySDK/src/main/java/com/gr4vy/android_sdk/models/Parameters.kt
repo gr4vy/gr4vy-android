@@ -14,7 +14,10 @@ data class Parameters(
     val externalIdentifier: String?,
     val store: String?,
     val display: String?,
-    val gr4vyIntent: String?
+    val gr4vyIntent: String?,
+    val cartItems: List<CartItem>?,
+    val paymentSource: PaymentSource,
+    val metadata: Gr4vyMetaData?,
 ) : Parcelable {
     init {
         require(token.isNotBlank()) { "Gr4vy token was blank" }

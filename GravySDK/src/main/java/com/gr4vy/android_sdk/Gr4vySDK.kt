@@ -9,9 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.webkit.WebViewFeature
-import com.gr4vy.android_sdk.models.Config
-import com.gr4vy.android_sdk.models.Gr4vyResult
-import com.gr4vy.android_sdk.models.Parameters
+import com.gr4vy.android_sdk.models.*
 
 class Gr4vySDK(
     private val registry: ActivityResultRegistry,
@@ -58,7 +56,10 @@ class Gr4vySDK(
         externalIdentifier: String? = null,
         store: String? = null,
         display: String? = null,
-        gr4vyIntent: String? = null
+        gr4vyIntent: String? = null,
+        cartItems: List<CartItem>? = null,
+        paymentSource: PaymentSource = PaymentSource.NOT_SET,
+        metadata: Gr4vyMetaData? = null,
     ) {
 
         if(!isSupported()) {
@@ -76,7 +77,10 @@ class Gr4vySDK(
             externalIdentifier = externalIdentifier,
             store = store,
             display = display,
-            gr4vyIntent = gr4vyIntent
+            gr4vyIntent = gr4vyIntent,
+            cartItems = cartItems,
+            paymentSource = paymentSource,
+            metadata = metadata,
         )
 
         val intent = MainActivity.createIntentWithParameters(context, parameters)

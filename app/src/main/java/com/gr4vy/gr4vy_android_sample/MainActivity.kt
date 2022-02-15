@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
             token = "[TOKEN]",
             amount = 10873,
             currency = "GBP",
-            country = "GB"
+            country = "GB",
         )
     }
 
