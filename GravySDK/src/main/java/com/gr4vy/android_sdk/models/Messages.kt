@@ -1,5 +1,7 @@
 package com.gr4vy.android_sdk.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -60,6 +62,9 @@ data class UpdateMessage(
                     store = parameters.store,
                     display = parameters.display,
                     gr4vyIntent = parameters.gr4vyIntent,
+                    cartItems = parameters.cartItems?.map {UpdateCartItem.fromCartItem(it)},
+                    paymentSource = parameters.paymentSource.toSerialisedString(),
+                    metadata = parameters.metadata
                 )
             )
         }
@@ -78,5 +83,25 @@ data class Update(
     val externalIdentifier: String? = null,
     val store: String? = null,
     val display: String? = null,
-    val gr4vyIntent: String? = null
+    val gr4vyIntent: String? = null,
+    val cartItems: List<UpdateCartItem>?,
+    val paymentSource: String?,
+    val metadata: Gr4vyMetaData?,
 )
+
+@Serializable
+data class UpdateCartItem(
+    val name: String,
+    val quantity: Int,
+    val unitAmount: Int) {
+
+    companion object {
+
+        fun fromCartItem(item: CartItem): UpdateCartItem {
+            return UpdateCartItem(
+                name = item.name,
+                quantity = item.quantity,
+                unitAmount = item.unitAmount)
+        }
+    }
+}

@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.0-yellowgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.2.0-yellowgreen?style=for-the-badge)
 
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.gr4vy:gr4vy-android:v1.1.0'
+  implementation 'com.github.gr4vy:gr4vy-android:v1.2.0'
 }
 ```
 
@@ -89,6 +89,9 @@ These are the options available in this SDK:
 | `store`                   | `Optional`       | `'ask'`, `true`, `false` - Explicitly store the payment method or ask the buyer, this is used when a buyerId is provided.|
 | `display`                 | `Optional`       | `all`, `addOnly`, `storedOnly`, `supportsTokenization` - Filters the payment methods to show stored methods only, new payment methods only or methods that support tokenization.
 | `intent`                  | `Optional` | `authorize`, `capture` - Defines the intent of this API call. This determines the desired initial state of the transaction.|
+| `metadata`                | `Optional` | An optional dictionary of key/values for transaction metadata. All values should be a string.|
+| `paymentSource`           | `Optional` | `installment`, `recurring` - Can be used to signal that Embed is used to capture the first transaction for a subscription or an installment. When used, `store` is implied to be `true` and `display` is implied to be `supportsTokenization`. This means that payment options that do not support tokenization are automatically hidden. |
+| `cartItems`               | `Optional` | An optional array of cart item objects, each object must define a `name`, `quantity`, and `unitAmount`.|
 
 ### Step 3. Handle events from Gr4vy
 
