@@ -26,7 +26,7 @@ class Gr4vySDK(
             owner,
             ActivityResultContracts.StartActivityForResult()
         ) { activityResult ->
-            val result = activityResult.data?.getParcelableExtra<Gr4vyResult>(MainActivity.RESULT_KEY)
+            val result = activityResult.data?.getParcelableExtra<Gr4vyResult>(Gr4vyActivity.RESULT_KEY)
 
             if (result != null) {
                 handler.onGr4vyResult(result)
@@ -83,7 +83,7 @@ class Gr4vySDK(
             metadata = metadata,
         )
 
-        val intent = MainActivity.createIntentWithParameters(context, parameters)
+        val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)
 
         launchGr4vy.launch(intent)
     }
