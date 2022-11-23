@@ -3,8 +3,7 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.2.0-yellowgreen?style=for-the-badge)
-
+![Version](https://img.shields.io/badge/Version-1.3.0-yellowgreen?style=for-the-badge)
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
 
@@ -21,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.gr4vy:gr4vy-android:v1.2.0'
+  implementation 'com.github.gr4vy:gr4vy-android:v1.3.0'
 }
 ```
 
@@ -37,9 +36,12 @@ Add the following meta information to your App's manifest
 ```
 
 > **Note**:
-> Replace `[GR4VY_ID]` with the ID of your instance and `[ENVIRONMENT]` 
+> Replace `[GR4VY_ID]` with the ID of your instance and `[ENVIRONMENT]`
 > with either the `sandbox` or `production` environment.
 
+Ensure you have the internet permission added to your manifest:
+
+`<uses-permission android:name="android.permission.INTERNET" />`
 
 ## Running
 
@@ -52,6 +54,10 @@ Add the following to the top of your activity:
 then initialise it within the onCreate() method like so:
 
 `gr4vySDK = Gr4vySDK(activityResultRegistry, this, this)`
+
+then register the observer like so:
+
+`lifecycle.addObserver(gr4vySDK)`
 
 finally implement the Gr4vyResultHandler interface on the Activity and implement the methods:
 
@@ -75,23 +81,23 @@ To use Gr4vy Embed call the `.launch()` method:
 
 ### Options
 
-These are the options available in this SDK: 
+These are the options available in this SDK:
 
-| Field                     | Optional / Required    | Description                                                                                                                                                                                                                                                                                                                               |
-| ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `gr4vyId`                 | **`Required`**      | Provided in the manifest. The Gr4vy ID automatically sets the `apiHost` to `api.<gr4vyId>.gr4vy.app` for production and `api.sandbox.<gr4vyId>.gr4vy.app` and  to `embed.sandbox.<gr4vyId>.gr4vy.app` for the sandbox environment.|
-| `token`                   | **`Required`**      | The server-side generated JWT token used to authenticate any of the API calls.|
-| `amount`                  | **`Required`**      | The amount to authorize or capture in the specified `currency` only.|                                                                                   |
-| `currency`                | **`Required`**      | A valid, active, 3-character `ISO 4217` currency code to authorize or capture the `amount` for.|
-| `country`                 | **`Required`**      | A valid `ISO 3166` country code.|
-| `buyerId`                 | `Optional`      | Provided in the manifest. The buyer ID for this transaction. The transaction will automatically be associated to a buyer with that ID.|
-| `externalIdentifier`      | `Optional`      | An optional external identifier that can be supplied. This will automatically be associated to any resource created by Gr4vy and can subsequently be used to find a resource by that ID. |
-| `store`                   | `Optional`       | `'ask'`, `true`, `false` - Explicitly store the payment method or ask the buyer, this is used when a buyerId is provided.|
-| `display`                 | `Optional`       | `all`, `addOnly`, `storedOnly`, `supportsTokenization` - Filters the payment methods to show stored methods only, new payment methods only or methods that support tokenization.
-| `intent`                  | `Optional` | `authorize`, `capture` - Defines the intent of this API call. This determines the desired initial state of the transaction.|
-| `metadata`                | `Optional` | An optional dictionary of key/values for transaction metadata. All values should be a string.|
-| `paymentSource`           | `Optional` | `installment`, `recurring` - Can be used to signal that Embed is used to capture the first transaction for a subscription or an installment. When used, `store` is implied to be `true` and `display` is implied to be `supportsTokenization`. This means that payment options that do not support tokenization are automatically hidden. |
-| `cartItems`               | `Optional` | An optional array of cart item objects, each object must define a `name`, `quantity`, and `unitAmount`.|
+| Field                | Optional / Required | Description                                                                                                                                                                                                                                                                                                                               |
+| -------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| `gr4vyId`            | **`Required`**      | Provided in the manifest. The Gr4vy ID automatically sets the `apiHost` to `api.<gr4vyId>.gr4vy.app` for production and `api.sandbox.<gr4vyId>.gr4vy.app` and to `embed.sandbox.<gr4vyId>.gr4vy.app` for the sandbox environment.                                                                                                         |
+| `token`              | **`Required`**      | The server-side generated JWT token used to authenticate any of the API calls.                                                                                                                                                                                                                                                            |
+| `amount`             | **`Required`**      | The amount to authorize or capture in the specified `currency` only.                                                                                                                                                                                                                                                                      |     |
+| `currency`           | **`Required`**      | A valid, active, 3-character `ISO 4217` currency code to authorize or capture the `amount` for.                                                                                                                                                                                                                                           |
+| `country`            | **`Required`**      | A valid `ISO 3166` country code.                                                                                                                                                                                                                                                                                                          |
+| `buyerId`            | `Optional`          | Provided in the manifest. The buyer ID for this transaction. The transaction will automatically be associated to a buyer with that ID.                                                                                                                                                                                                    |
+| `externalIdentifier` | `Optional`          | An optional external identifier that can be supplied. This will automatically be associated to any resource created by Gr4vy and can subsequently be used to find a resource by that ID.                                                                                                                                                  |
+| `store`              | `Optional`          | `'ask'`, `true`, `false` - Explicitly store the payment method or ask the buyer, this is used when a buyerId is provided.                                                                                                                                                                                                                 |
+| `display`            | `Optional`          | `all`, `addOnly`, `storedOnly`, `supportsTokenization` - Filters the payment methods to show stored methods only, new payment methods only or methods that support tokenization.                                                                                                                                                          |
+| `intent`             | `Optional`          | `authorize`, `capture` - Defines the intent of this API call. This determines the desired initial state of the transaction.                                                                                                                                                                                                               |
+| `metadata`           | `Optional`          | An optional dictionary of key/values for transaction metadata. All values should be a string.                                                                                                                                                                                                                                             |
+| `paymentSource`      | `Optional`          | `installment`, `recurring` - Can be used to signal that Embed is used to capture the first transaction for a subscription or an installment. When used, `store` is implied to be `true` and `display` is implied to be `supportsTokenization`. This means that payment options that do not support tokenization are automatically hidden. |
+| `cartItems`          | `Optional`          | An optional array of cart item objects, each object must define a `name`, `quantity`, and `unitAmount`.                                                                                                                                                                                                                                   |
 
 ### Step 3. Handle events from Gr4vy
 

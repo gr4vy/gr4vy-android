@@ -18,7 +18,7 @@ class Secure3DActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_gr4vy)
         setSupportActionBar(findViewById(R.id.gr4vy_toolbar))
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

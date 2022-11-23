@@ -7,7 +7,7 @@
     <application>
         <activity
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:name="com.gr4vy.android_sdk.MainActivity"
+            android:name="com.gr4vy.android_sdk.Gr4vyActivity"
             android:exported="false" />
         <activity android:name="com.gr4vy.android_sdk.Secure3DActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
