@@ -1,14 +1,12 @@
 package com.gr4vy.android_sdk.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Transaction(
     val status: String,
-    @SerialName("transactionID") val transactionId: String,
+    @SerialName("id") val transactionId: String,
     @SerialName("paymentMethodID") val paymentMethodId: String?
 )
 
@@ -39,6 +37,19 @@ data class TransactionMessage(
 ) : Message()
 
 @Serializable
+data class GoogleStartSessionMessage(
+    val type: String,
+    val channel: String,
+    val data: GoogleSession,
+) : Message()
+
+@Serializable
+data class GooglePaySessionAuthorizedMessage(
+    val type: String,
+    val data: String,
+)
+
+@Serializable
 data class UpdateMessage(
     val type: String,
     val data: Update,
@@ -61,10 +72,11 @@ data class UpdateMessage(
                     externalIdentifier = parameters.externalIdentifier,
                     store = parameters.store,
                     display = parameters.display,
-                    gr4vyIntent = parameters.gr4vyIntent,
+                    intent = parameters.intent,
                     cartItems = parameters.cartItems?.map {UpdateCartItem.fromCartItem(it)},
                     paymentSource = parameters.paymentSource.toSerialisedString(),
-                    metadata = parameters.metadata
+                    metadata = parameters.metadata,
+                    supportedGooglePayVersion = 1,
                 )
             )
         }
@@ -83,10 +95,11 @@ data class Update(
     val externalIdentifier: String? = null,
     val store: String? = null,
     val display: String? = null,
-    val gr4vyIntent: String? = null,
+    val intent: String? = null,
     val cartItems: List<UpdateCartItem>?,
     val paymentSource: String?,
     val metadata: Gr4vyMetaData?,
+    var supportedGooglePayVersion: Int,
 )
 
 @Serializable
