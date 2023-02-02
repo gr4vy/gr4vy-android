@@ -6,4 +6,5 @@ interface IConfig : Parcelable {
     val id: String
     val instance: String
     val debug: Boolean
+    val isProduction: Boolean
 }

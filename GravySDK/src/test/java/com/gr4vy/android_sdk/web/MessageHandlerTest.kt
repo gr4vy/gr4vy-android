@@ -28,7 +28,7 @@ class MessageHandlerTest : TestCase() {
     @Test
     fun testHandleMessageReturnsFrameReadyWhenGivenMessage() {
 
-        val expectedJsonToPost = "{\"type\":\"updateOptions\",\"data\":{\"apiHost\":\"api.config-instance.gr4vy.app\",\"apiUrl\":\"https://api.config-instance.gr4vy.app\",\"token\":\"token\",\"amount\":10873,\"country\":\"GB\",\"currency\":\"GBP\",\"buyerId\":\"buyerId\"}}"
+        val expectedJsonToPost = "{\"type\":\"updateOptions\",\"data\":{\"apiHost\":\"api.config-instance.gr4vy.app\",\"apiUrl\":\"https://api.config-instance.gr4vy.app\",\"token\":\"token\",\"amount\":10873,\"country\":\"GB\",\"currency\":\"GBP\",\"buyerId\":\"buyerId\",\"supportedGooglePayVersion\":1}}"
         val expectedJs = "window.postMessage($expectedJsonToPost)"
 
         val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
@@ -67,7 +67,8 @@ class MessageHandlerTest : TestCase() {
                         "\"paymentSource\":\"installment\"," +
                         "\"metadata\":{" +
                             "\"$expectedMetaDataKey\":\"$expectedMetaDataValue\"" +
-                        "}" +
+                        "}," +
+                        "\"supportedGooglePayVersion\":1" +
                     "}" +
                 "}"
         val expectedJs = "window.postMessage($expectedJsonToPost)"
@@ -99,7 +100,8 @@ class MessageHandlerTest : TestCase() {
                     "\"amount\":10873," +
                     "\"country\":\"GB\"," +
                     "\"currency\":\"GBP\"," +
-                    "\"buyerId\":\"buyerId\"" +
+                    "\"buyerId\":\"buyerId\"," +
+                    "\"supportedGooglePayVersion\":1" +
                     "}" +
                 "}"
         val expectedJs = "window.postMessage($expectedJsonToPost)"
@@ -142,7 +144,7 @@ class MessageHandlerTest : TestCase() {
                 "\"channel\": \"$expectedChannel\", " +
                 "\"data\": {" +
                         "\"status\": \"$expectedStatus\"," +
-                        "\"transactionID\": \"$expectedStatus\"," +
+                        "\"id\": \"$expectedStatus\"," +
                         "\"paymentMethodID\": \"$expectedStatus\"" +
                     "}" +
             "}"
@@ -196,7 +198,7 @@ class MessageHandlerTest : TestCase() {
                 " \"channel\": \"$expectedChannel\"," +
                 " \"data\": {" +
                         "\"status\": \"$expectedStatus\"," +
-                        "\"transactionID\": \"\"," +
+                        "\"id\": \"\"," +
                         "\"paymentMethodID\": \"\"" +
                     "}" +
             "}"

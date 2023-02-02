@@ -16,6 +16,9 @@ class Config(private val metaData: Bundle) : IConfig {
             "gr4vy-environment",
             "production"
         ) //production or sandbox
+    override val isProduction: Boolean
+        get() = environment == "production"
+
 
     init {
         require(id.isNotBlank()) { "Gr4vy ID must be set - add <meta-data android:name=\"gr4vy-id\" android:value=\"ID\" /> to the manifest" }

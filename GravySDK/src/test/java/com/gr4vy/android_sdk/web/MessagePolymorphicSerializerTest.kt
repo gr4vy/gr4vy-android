@@ -82,7 +82,7 @@ class MessagePolymorphicSerializerTest : TestCase() {
                         " \"channel\": \"$expectedChannel\"," +
                         " \"data\": {" +
                                 "\"status\": \"$expectedStatus\"," +
-                                "\"transactionID\": \"$expectedTransactionId\"," +
+                                "\"id\": \"$expectedTransactionId\"," +
                                 "\"paymentMethodID\": \"$expectedPaymentMethodId\"" +
                         "}" +
                     "}"

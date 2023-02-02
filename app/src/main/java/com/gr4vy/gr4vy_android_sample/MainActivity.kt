@@ -1,5 +1,6 @@
 package com.gr4vy.gr4vy_android_sample
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -62,6 +63,7 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainContent(onClick: (() -> Unit)) {
 

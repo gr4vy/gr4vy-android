@@ -9,13 +9,14 @@ private val testConfig = object: IConfig {
     override val id = "config-id"
     override val instance = "config-instance"
     override val debug = false
+    override val isProduction: Boolean = false
 
     override fun describeContents(): Int {
         TODO("Not needed")
     }
 
-    override fun writeToParcel(dest: Parcel?, flags: Int) {
-        TODO("Not needed")
+    override fun writeToParcel(p0: Parcel, p1: Int) {
+        TODO("Not yet implemented")
     }
 }
 
@@ -29,7 +30,7 @@ val testParameters = Parameters(
     externalIdentifier = null,
     store = null,
     display = null,
-    gr4vyIntent = null,
+    intent = null,
     cartItems = null,
     paymentSource = PaymentSource.NOT_SET,
     metadata = null

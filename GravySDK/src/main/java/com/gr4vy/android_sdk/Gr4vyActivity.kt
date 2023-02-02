@@ -8,21 +8,26 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.wallet.PaymentData
+import com.gr4vy.android_sdk.google_pay.GooglePayClient
+import com.gr4vy.android_sdk.models.GoogleSession
 import com.gr4vy.android_sdk.models.Gr4vyResult
 import com.gr4vy.android_sdk.models.Parameters
 import com.gr4vy.android_sdk.web.MessageHandler
 import com.gr4vy.android_sdk.web.MyWebChromeClient
 import com.gr4vy.android_sdk.web.UrlFactory
 import com.gr4vy.android_sdk.web.WebAppInterface
+import com.gr4vy.gr4vy_android.BuildConfig
 import com.gr4vy.gr4vy_android.R
 
 class Gr4vyActivity : AppCompatActivity() {
 
     private val parameters: Parameters by lazy { intent.getParcelableExtra<Parameters>(PARAMETERS_EXTRA_KEY) as Parameters }
+    private lateinit var googlePayClient: GooglePayClient
 
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +45,14 @@ class Gr4vyActivity : AppCompatActivity() {
 
         val javascriptInterface = WebAppInterface(MessageHandler(parameters)).apply {
             this.open3dsListener = { url -> open3ds(url) }
+            this.startGooglePayListener = { data: GoogleSession -> googlePayClient.pay(this@Gr4vyActivity, data, parameters.amount) }
             this.callback = { message -> handleCallback(message) }
         }
 
+        googlePayClient = GooglePayClient.createClient(this, parameters.config.id, parameters.config.isProduction)
+
         findViewById<WebView>(R.id.gr4vy_webview).apply {
-            WebView.setWebContentsDebuggingEnabled(true)
+            WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
             this.webViewClient = WebViewClient()
             this.webChromeClient = chromeClient
             this.settings.javaScriptEnabled = true
@@ -63,9 +71,32 @@ class Gr4vyActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode != Secure3DActivity.REQUEST_CODE) {
-            return
+        when(requestCode) {
+            Secure3DActivity.REQUEST_CODE -> handle3dSecureResult(data)
+            GooglePayClient.REQUEST_CODE -> googlePayClient.handleGooglePayResult(resultCode, data, ::handleGooglePaymentSuccess, ::handleGooglePaymentError, ::handleGooglePaymentCancelled)
         }
+
+    }
+
+    private fun handleGooglePaymentSuccess(paymentData: PaymentData) {
+        val webView = findViewById<WebView>(R.id.gr4vy_webview)
+        val message = "window.postMessage({\"channel\":123,\"type\":\"googlePaySessionAuthorized\",\"data\":${paymentData.toJson()}})"
+        webView.evaluateJavascript(message, null)
+    }
+
+    private fun handleGooglePaymentError(status: Status) {
+        val webView = findViewById<WebView>(R.id.gr4vy_webview)
+        val message = "window.postMessage({\"channel\":123,\"type\":\"googlePaySessionErrored\",\"data\":{\"status\":${status.statusCode}, \"statusMessage\": \"${status.statusMessage.toString()}\"}})"
+        webView.evaluateJavascript(message, null)
+    }
+
+    private fun handleGooglePaymentCancelled() {
+        val webView = findViewById<WebView>(R.id.gr4vy_webview)
+        val message = "window.postMessage({\"channel\":123,\"type\":\"googlePaySessionCancelled\"})"
+        webView.evaluateJavascript(message, null)
+    }
+
+    private fun handle3dSecureResult(data: Intent?) {
 
         val result = data?.getStringExtra(Secure3DActivity.RESULT_KEY).orEmpty()
 
@@ -73,7 +104,7 @@ class Gr4vyActivity : AppCompatActivity() {
         webView.evaluateJavascript("window.postMessage($result)", null)
     }
 
-    override fun onOptionsItemSelected(@NonNull item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 finish()

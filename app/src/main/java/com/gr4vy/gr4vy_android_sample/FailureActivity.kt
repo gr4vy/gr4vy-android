@@ -38,7 +38,7 @@ class FailureActivity : ComponentActivity() {
 @Composable
 fun FailureContent() {
 
-    Scaffold {
+    Scaffold { padding ->
         Column(verticalArrangement = Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
             .fillMaxSize()
             .padding(all = 16.dp), content = {
