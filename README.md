@@ -31,7 +31,7 @@ dependencies {
 Add the following meta information to your App's manifest
 
 ```
-<meta-data android:name="gr4vy-id" android:value="[GRAVY_ID]" />
+<meta-data android:name="gr4vy-id" android:value="[GR4VY_ID]" />
 <meta-data android:name="gr4vy-environment" android:value="[ENVIRONMENT]" />
 ```
 
