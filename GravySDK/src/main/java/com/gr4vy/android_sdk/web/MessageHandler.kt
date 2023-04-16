@@ -4,7 +4,7 @@ import com.gr4vy.android_sdk.models.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class MessageHandler(private val parameters: Parameters) {
+class MessageHandler(private val parameters: Parameters, private val isGooglePayEnabled: Boolean = false) {
 
     private val json = Json {
         classDiscriminator = "theType"
@@ -22,12 +22,12 @@ class MessageHandler(private val parameters: Parameters) {
             is ApprovalMessage -> Open3ds(decodedMessage.data)
             is GoogleStartSessionMessage -> StartGooglePay(decodedMessage.data)
             is FrameReadyMessage -> {
-
-                val jsonToPost = json.encodeToString(UpdateMessage.fromParameters(parameters))
-
+                val jsonToPost = json.encodeToString(UpdateMessage.fromParameters(parameters, isGooglePayEnabled))
                 val js = "window.postMessage($jsonToPost)"
-
                 return FrameReady(js)
+            }
+            is NavigationMessage -> {
+                return UpdateNavigation(decodedMessage.data)
             }
             is TransactionMessage -> {
                 when (decodedMessage.data.status) {
@@ -59,6 +59,7 @@ class MessageHandler(private val parameters: Parameters) {
 }
 
 sealed class MessageHandlerResult
+class UpdateNavigation(val navigationData: Navigation) : MessageHandlerResult()
 class Open3ds(val url: String) : MessageHandlerResult()
 class Gr4vyMessageResult(val result: Gr4vyResult) : MessageHandlerResult()
 class FrameReady(val js: String) : MessageHandlerResult()

@@ -1,5 +1,7 @@
 package com.gr4vy.android_sdk.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -8,6 +10,12 @@ data class Transaction(
     val status: String,
     @SerialName("id") val transactionId: String,
     @SerialName("paymentMethodID") val paymentMethodId: String?
+)
+
+@Serializable
+data class Navigation(
+    val title: String,
+    val canGoBack: Boolean,
 )
 
 @Serializable
@@ -27,6 +35,13 @@ data class ApprovalMessage(
     val type: String,
     val channel: String,
     val data: String,
+) : Message()
+
+@Serializable
+data class NavigationMessage(
+    val type: String,
+    val channel: String,
+    val data: Navigation,
 ) : Message()
 
 @Serializable
@@ -57,7 +72,7 @@ data class UpdateMessage(
     ) {
     companion object {
 
-        fun fromParameters(parameters: Parameters): UpdateMessage {
+        fun fromParameters(parameters: Parameters, isGooglePayEnabled: Boolean): UpdateMessage {
 
             return UpdateMessage(
                 type = "updateOptions",
@@ -76,7 +91,13 @@ data class UpdateMessage(
                     cartItems = parameters.cartItems?.map {UpdateCartItem.fromCartItem(it)},
                     paymentSource = parameters.paymentSource.toSerialisedString(),
                     metadata = parameters.metadata,
-                    supportedGooglePayVersion = 1,
+                    supportedGooglePayVersion =  if(isGooglePayEnabled) 1 else null,
+                    theme =  parameters.theme,
+                    buyerExternalIdentifier =  parameters.buyerExternalIdentifier,
+                    locale =  parameters.locale,
+                    statementDescriptor =  parameters.statementDescriptor,
+                    requireSecurityCode =  parameters.requireSecurityCode,
+                    shippingDetailsId =  parameters.shippingDetailsId,
                 )
             )
         }
@@ -99,7 +120,13 @@ data class Update(
     val cartItems: List<UpdateCartItem>?,
     val paymentSource: String?,
     val metadata: Gr4vyMetaData?,
-    var supportedGooglePayVersion: Int,
+    var supportedGooglePayVersion: Int? = null,
+    val theme: Gr4vyTheme? = null,
+    val buyerExternalIdentifier: String? = null,
+    val locale: String? = null,
+    val statementDescriptor: Gr4vyStatementDescriptor? = null,
+    val requireSecurityCode: Boolean? = null,
+    val shippingDetailsId: String? = null
 )
 
 @Serializable
@@ -118,3 +145,76 @@ data class UpdateCartItem(
         }
     }
 }
+
+@Serializable
+@Parcelize
+data class Gr4vyTheme(
+    val fonts: Gr4vyFonts? = null,
+    val colors: Gr4vyColours? = null,
+    val borderWidths: Gr4vyBorderWidths? = null,
+    val radii: Gr4vyRadii? = null,
+    val shadows: Gr4vyShadows? = null
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class Gr4vyFonts(
+    var fonts: String?
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class Gr4vyColours(
+    val text: String? = null,
+    val subtvalext: String? = null,
+    val labelText: String? = null,
+    val primary: String? = null,
+    val pageBackground: String? = null,
+    val containerBackgroundUnchecked: String? = null,
+    val containerBackground: String? = null,
+    val containerBorder: String? = null,
+    val inputBorder: String? = null,
+    val inputBackground: String? = null,
+    val inputText: String? = null,
+    val inputRadioBorder: String? = null,
+    val inputRadioBorderChecked: String? = null,
+    val danger: String? = null,
+    val dangerBackground: String? = null,
+    val dangerText: String? = null,
+    val info: String? = null,
+    val infoBackground: String? = null,
+    val infoText: String? = null,
+    val focus: String? = null,
+    val headerText: String? = null,
+    val headerBackground: String? = null
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class Gr4vyBorderWidths(
+    val container: String? = null,
+    val input: String? = null
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class Gr4vyRadii(
+    val container: String? = null,
+    val input: String? = null
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class Gr4vyShadows(
+    val focusRing: String? = null
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class Gr4vyStatementDescriptor(
+    val name: String? = null,
+    val description: String? = null,
+    val phoneNumber: String? = null,
+    val city: String?= null,
+    val url: String? = null
+) : Parcelable

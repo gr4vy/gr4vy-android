@@ -59,9 +59,9 @@ class GooglePayClient(private val paymentsClient: PaymentsClient, private val gr
         AutoResolveHelper.resolveTask(paymentsClient.loadPaymentData(paymentRequestData), activity, REQUEST_CODE)
     }
 
-    suspend fun possiblyShowGooglePayButton(paymentRequest: JSONObject): Boolean {
+    suspend fun isGooglePayEnabled(): Boolean {
 
-        val request = IsReadyToPayRequest.fromJson(paymentRequest.toString())
+        val request = IsReadyToPayRequest.fromJson(createDevicePaymentCheckRequest().toString())
 
         return try {
             paymentsClient.isReadyToPay(request).await()
@@ -128,5 +128,36 @@ class GooglePayClient(private val paymentsClient: PaymentsClient, private val gr
             } catch (e: JSONException) {
                 null
             }
+    }
+
+    private fun createDevicePaymentCheckRequest(): JSONObject? {
+
+        val allowedCardNetworks = JSONArray(listOf("AMEX", "DISCOVER", "JCB", "MASTERCARD", "VISA"))
+
+        val allowedCardAuthMethods = JSONArray(listOf("PAN_ONLY", "CRYPTOGRAM_3DS"))
+
+        val cardPaymentMethod = JSONObject().apply {
+
+            val parameters = JSONObject().apply {
+                put("allowedAuthMethods", allowedCardAuthMethods)
+                put("allowedCardNetworks", allowedCardNetworks)
+            }
+
+            put("type", "CARD")
+            put("parameters", parameters)
+        }
+
+        val baseRequest = JSONObject().apply {
+            put("apiVersion", 2)
+            put("apiVersionMinor", 0)
+        }
+
+        return try {
+            baseRequest.apply {
+                put("allowedPaymentMethods", JSONArray().put(cardPaymentMethod))
+            }
+        } catch (e: JSONException) {
+            null
+        }
     }
 }

@@ -8,12 +8,14 @@ import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebViewCompat
 import com.gr4vy.android_sdk.models.GoogleSession
 import com.gr4vy.android_sdk.models.Gr4vyResult
+import com.gr4vy.android_sdk.models.Navigation
 
 class WebAppInterface(private val messageHandler: MessageHandler) :
     WebViewCompat.WebMessageListener {
 
     var open3dsListener: ((url: String) -> Unit)? = null
     var startGooglePayListener: ((data: GoogleSession) -> Unit)? = null
+    var navigationListener: ((data: Navigation) -> Unit)? = null
     var callback: ((result: Gr4vyResult) -> Unit)? = null
 
     override fun onPostMessage(
@@ -32,6 +34,7 @@ class WebAppInterface(private val messageHandler: MessageHandler) :
                 is Gr4vyMessageResult -> callback?.invoke(result.result)
                 is Open3ds -> open3dsListener?.invoke(result.url)
                 is StartGooglePay -> startGooglePayListener?.invoke(result.googleSessionData)
+                is UpdateNavigation -> navigationListener?.invoke(result.navigationData)
                 else -> Log.d("Gr4vy", "Unknown message received")
             }
         }
