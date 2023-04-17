@@ -40,6 +40,8 @@ class Gr4vySDK(
      * Launches Gr4vy!
      *
      * @param context Android context to be used to launch
+     * @param gr4vyId A Gr4vy ID
+     * @param environment The environment to be used. Defaults to production.
      * @param token A Gr4vy SDK Authentication token
      * @param amount the amount to charge for the transaction
      * @param currency the currency to use. For example "GBP" for British Pounds
@@ -49,6 +51,7 @@ class Gr4vySDK(
     fun launch(
         context: Context,
         gr4vyId: String,
+        environment: String = "production",
         token: String,
         amount: Int,
         currency: String,
@@ -74,7 +77,7 @@ class Gr4vySDK(
             return
         }
 
-        val config: Config = Config.fromContextWithID(context, gr4vyId)
+        val config: Config = Config.fromContextWithParams(context, gr4vyId, environment)
 
         val parameters = Parameters(
             config = config,
