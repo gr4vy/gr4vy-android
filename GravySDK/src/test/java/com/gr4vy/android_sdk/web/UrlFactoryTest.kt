@@ -10,6 +10,6 @@ class UrlFactoryTest : TestCase() {
 
         val result = UrlFactory.fromParameters(testParameters)
 
-        assertEquals("https://embed.config-instance.gr4vy.app/mobile.html?channel=123", result)
+        assertEquals("https://embed.config-instance.gr4vy.app/mobile?channel=123", result)
     }
 }

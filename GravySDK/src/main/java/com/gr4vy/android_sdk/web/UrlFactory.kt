@@ -7,7 +7,7 @@ class UrlFactory {
     companion object {
 
         fun fromParameters(parameters: Parameters) : String {
-            return "https://embed.${parameters.config.instance}.gr4vy.app/mobile.html?channel=123"
+            return "https://embed.${parameters.config.instance}.gr4vy.app/mobile?channel=123"
         }
     }
 }

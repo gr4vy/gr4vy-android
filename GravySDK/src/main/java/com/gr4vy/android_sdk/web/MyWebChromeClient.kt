@@ -5,10 +5,10 @@ import android.webkit.WebView
 
 class MyWebChromeClient : WebChromeClient() {
 
-    var titleUpdateListener: ((title: String) -> Unit)? = null
+    var navigationUpdateListener: ((title: String, canGoBack: Boolean?) -> Unit)? = null
 
     override fun onReceivedTitle(view: WebView?, title: String?) {
         super.onReceivedTitle(view, title)
-        titleUpdateListener?.invoke(title.orEmpty())
+        navigationUpdateListener?.invoke(title.orEmpty(), null)
     }
 }

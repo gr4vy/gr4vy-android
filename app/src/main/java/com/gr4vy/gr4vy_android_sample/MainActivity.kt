@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gr4vy.gr4vy_android_sample.ui.theme.GravyAndroidSDKSampleTheme
 import com.gr4vy.android_sdk.*
-import com.gr4vy.android_sdk.models.Gr4vyResult
+import com.gr4vy.android_sdk.models.*
 
 class MainActivity : ComponentActivity(), Gr4vyResultHandler {
 
@@ -45,12 +45,41 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
     }
 
     private fun launchGr4vy() {
+
+        // TODO: Set your own token, buyerID and gr4vyID here
+        val token = "<TOKEN HERE>"
+        val buyerId = "<BUYER ID HERE>"
+        val gr4vyId = "<GR4VY ID HERE>"
+
         gr4vySDK.launch(
             context = this,
-            token = "[TOKEN]",
+            gr4vyId = gr4vyId,
+            token = token,
             amount = 10873,
             currency = "GBP",
             country = "GB",
+            buyerId = buyerId,
+            theme = Gr4vyTheme(Gr4vyFonts("google:Lato, Tahoma, Arial"), Gr4vyColours("#ffffff", "#a1b0bd",
+                "#fff",
+                "#fff",
+                "#1d334b",
+                "#1d334b",
+                "#2c4765",
+                "#304c6a",
+                "#f2f2f2",
+                "#2a4159",
+                "#fff",
+                "#ff556a",
+                "#2c4765",
+                "#fff",
+                "#3ea2ff",
+                "#e7f2fb",
+                "#0367c4",
+                "#4844ff",
+                "#ffffff",
+                "#2c4765", "#ffffff", "#2c4765"), Gr4vyBorderWidths("thin", "thin"), Gr4vyRadii("subtle", "subtle"), Gr4vyShadows
+            ("0 0 0 2px #ffffff, 0 0 0 4px #4844ff")
+            ),
         )
     }
 

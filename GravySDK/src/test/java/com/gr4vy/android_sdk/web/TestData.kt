@@ -6,7 +6,6 @@ import com.gr4vy.android_sdk.models.Parameters
 import com.gr4vy.android_sdk.models.PaymentSource
 
 private val testConfig = object: IConfig {
-    override val id = "config-id"
     override val instance = "config-instance"
     override val debug = false
     override val isProduction: Boolean = false
@@ -22,6 +21,7 @@ private val testConfig = object: IConfig {
 
 val testParameters = Parameters(
     config =  testConfig,
+    gr4vyId = "config-id",
     buyerId = "buyerId",
     token = "token",
     amount = 10873,

@@ -10,6 +10,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.webkit.WebViewFeature
 import com.gr4vy.android_sdk.models.*
+import kotlinx.parcelize.RawValue
 
 class Gr4vySDK(
     private val registry: ActivityResultRegistry,
@@ -18,7 +19,6 @@ class Gr4vySDK(
 ) : DefaultLifecycleObserver {
 
     private lateinit var launchGr4vy: ActivityResultLauncher<Intent>
-    private val config: Config = Config.fromContext(context)
 
     override fun onCreate(owner: LifecycleOwner) {
         launchGr4vy = registry.register(
@@ -48,6 +48,7 @@ class Gr4vySDK(
      */
     fun launch(
         context: Context,
+        gr4vyId: String,
         token: String,
         amount: Int,
         currency: String,
@@ -60,6 +61,12 @@ class Gr4vySDK(
         cartItems: List<CartItem>? = null,
         paymentSource: PaymentSource = PaymentSource.NOT_SET,
         metadata: Gr4vyMetaData? = null,
+        theme: @RawValue Gr4vyTheme? = null,
+        buyerExternalIdentifier: String? = null,
+        locale: String? = null,
+        statementDescriptor: @RawValue Gr4vyStatementDescriptor? = null,
+        requireSecurityCode: Boolean? = null,
+        shippingDetailsId: String? = null
     ) {
 
         if(!isSupported()) {
@@ -67,8 +74,11 @@ class Gr4vySDK(
             return
         }
 
+        val config: Config = Config.fromContextWithID(context, gr4vyId)
+
         val parameters = Parameters(
             config = config,
+            gr4vyId = gr4vyId,
             buyerId = buyerId,
             token = token,
             amount = amount,
@@ -81,6 +91,12 @@ class Gr4vySDK(
             cartItems = cartItems,
             paymentSource = paymentSource,
             metadata = metadata,
+            theme = theme,
+            buyerExternalIdentifier = buyerExternalIdentifier,
+            locale = locale,
+            statementDescriptor = statementDescriptor,
+            requireSecurityCode = requireSecurityCode,
+            shippingDetailsId = shippingDetailsId
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)

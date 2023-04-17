@@ -20,6 +20,7 @@ class MessagePolymorphicSerializer : JsonContentPolymorphicSerializer<Message>(M
             "approvalUrl" -> ApprovalMessage.serializer()
             "transactionCreated" -> TransactionMessage.serializer()
             "googlePaySessionStart" -> GoogleStartSessionMessage.serializer()
+            "navigation" -> NavigationMessage.serializer()
             else -> UnknownMessage.serializer()
         }
     }

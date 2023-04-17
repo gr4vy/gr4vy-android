@@ -3,13 +3,19 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.4.0-yellowgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.5.0-yellowgreen?style=for-the-badge)
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
 
-## Installing
+## Installation
 
 gr4vy_android doesn't contain any external dependencies.
+
+### Minimum API Level / Target API Level
+
+> **Note**:
+> The minimum API level required for this SDK is `21`
+> The target API level required for this SDK is `33`
 
 ### Gradle
 
@@ -20,7 +26,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.gr4vy:gr4vy-android:v1.4.0'
+  implementation 'com.github.gr4vy:gr4vy-android:v1.5.0'
 }
 ```
 
@@ -31,7 +37,6 @@ dependencies {
 Add the following meta information to your App's manifest
 
 ```
-<meta-data android:name="gr4vy-id" android:value="[GR4VY_ID]" />
 <meta-data android:name="gr4vy-environment" android:value="[ENVIRONMENT]" />
 ```
 
