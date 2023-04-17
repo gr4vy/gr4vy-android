@@ -26,8 +26,6 @@
 
         <activity android:name=".SuccessActivity" />
         <activity android:name=".FailureActivity" />
-
-        <meta-data android:name="gr4vy-environment" android:value="sandbox" />
     </application>
 
 </manifest>

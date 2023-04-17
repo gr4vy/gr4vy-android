@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.5.0-yellowgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.4.0-yellowgreen?style=for-the-badge)
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
 
@@ -26,23 +26,13 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.gr4vy:gr4vy-android:v1.5.0'
+  implementation 'com.github.gr4vy:gr4vy-android:v1.5.1'
 }
 ```
 
 ## Get started
 
 ### Setup
-
-Add the following meta information to your App's manifest
-
-```
-<meta-data android:name="gr4vy-environment" android:value="[ENVIRONMENT]" />
-```
-
-> **Note**:
-> Replace `[GR4VY_ID]` with the ID of your instance and `[ENVIRONMENT]`
-> with either the `sandbox` or `production` environment.
 
 Ensure you have the internet permission added to your manifest:
 
@@ -75,7 +65,8 @@ To use Gr4vy Embed call the `.launch()` method:
 ```kotlin
     gr4vySDK.launch(
         context = this,
-        token = [TOKEN],
+        gr4vyId = "[GR4VY_ID]"
+        token = "[TOKEN]",
         amount = 1299,
         currency = "USD",
         country = "US")
@@ -90,8 +81,9 @@ These are the options available in this SDK:
 
 | Field                     | Optional / Required    | Description                                                                                                                                                                                                                                                                                                                               |
 | ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `gr4vyId`                 | **`Required`**      | Provided in the manifest. The Gr4vy ID automatically sets the `apiHost` to `api.<gr4vyId>.gr4vy.app` for production and `api.sandbox.<gr4vyId>.gr4vy.app` and  to `embed.sandbox.<gr4vyId>.gr4vy.app` for the sandbox environment.|
+| `gr4vyId`                 | **`Required`**      | The Gr4vy ID automatically sets the `apiHost` to `api.<gr4vyId>.gr4vy.app` for production and `api.sandbox.<gr4vyId>.gr4vy.app` and  to `embed.sandbox.<gr4vyId>.gr4vy.app` for the sandbox environment.|
 | `token`                   | **`Required`**      | The server-side generated JWT token used to authenticate any of the API calls.|
+| `environment`             | `Optional`      | `"sandbox"`, `"production"`. Defaults to `"production"`. When `"sandbox"` is provided the URL will contain `sandbox.GR4VY_ID`.|
 | `amount`                  | **`Required`**      | The amount to authorize or capture in the specified `currency` only.|                                                                                   |
 | `currency`                | **`Required`**      | A valid, active, 3-character `ISO 4217` currency code to authorize or capture the `amount` for.|
 | `country`                 | **`Required`**      | A valid `ISO 3166` country code.|
