@@ -25,7 +25,8 @@ data class Parameters(
     val locale: String? = null,
     val statementDescriptor: Gr4vyStatementDescriptor? = null,
     val requireSecurityCode: Boolean? = null,
-    val shippingDetailsId: String? = null
+    val shippingDetailsId: String? = null,
+    val merchantAccountId: String? = null
 ) : Parcelable {
     init {
         require(token.isNotBlank()) { "Gr4vy token was blank" }

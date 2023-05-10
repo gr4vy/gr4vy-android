@@ -20,5 +20,8 @@ sealed class Gr4vyResult : Parcelable {
 
     @Parcelize
     class GeneralError(val reason: String? = "") : Gr4vyResult()
+
+    @Parcelize
+    class Cancelled() : Gr4vyResult()
 }
 

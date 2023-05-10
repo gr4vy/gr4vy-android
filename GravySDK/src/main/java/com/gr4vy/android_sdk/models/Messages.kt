@@ -98,6 +98,7 @@ data class UpdateMessage(
                     statementDescriptor =  parameters.statementDescriptor,
                     requireSecurityCode =  parameters.requireSecurityCode,
                     shippingDetailsId =  parameters.shippingDetailsId,
+                    merchantAccountId = parameters.merchantAccountId,
                 )
             )
         }
@@ -126,7 +127,8 @@ data class Update(
     val locale: String? = null,
     val statementDescriptor: Gr4vyStatementDescriptor? = null,
     val requireSecurityCode: Boolean? = null,
-    val shippingDetailsId: String? = null
+    val shippingDetailsId: String? = null,
+    val merchantAccountId: String? = null
 )
 
 @Serializable

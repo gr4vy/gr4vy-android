@@ -6,10 +6,10 @@ import android.os.Bundle
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Config(private val metaData: Bundle, private val id: String, private val environment: String = "production") : IConfig {
+class Config(private val metaData: Bundle, private val id: String, private val environment: String = "production", private val debugMode: Boolean) : IConfig {
 
     override val instance: String get() = if (environment == "sandbox") "sandbox.$id" else id
-    override val debug: Boolean get() = metaData.getBoolean("gr4vy-debug", false)
+    override val debug: Boolean get() = debugMode
     override val isProduction: Boolean
         get() = environment == "production"
 
@@ -17,11 +17,11 @@ class Config(private val metaData: Bundle, private val id: String, private val e
     init {}
 
     companion object {
-        fun fromContextWithParams(context: Context, id: String, environment: String): Config {
+        fun fromContextWithParams(context: Context, id: String, environment: String, debugMode: Boolean): Config {
             val metaData = context.packageManager
                 .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA).metaData
 
-            return Config(metaData, id, environment)
+            return Config(metaData, id, environment, debugMode)
         }
     }
 }

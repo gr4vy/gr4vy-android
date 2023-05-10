@@ -55,37 +55,19 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
             context = this,
             gr4vyId = gr4vyId,
             token = token,
+            environment = "sandbox",
             amount = 10873,
             currency = "GBP",
             country = "GB",
             buyerId = buyerId,
-            theme = Gr4vyTheme(Gr4vyFonts("google:Lato, Tahoma, Arial"), Gr4vyColours("#ffffff", "#a1b0bd",
-                "#fff",
-                "#fff",
-                "#1d334b",
-                "#1d334b",
-                "#2c4765",
-                "#304c6a",
-                "#f2f2f2",
-                "#2a4159",
-                "#fff",
-                "#ff556a",
-                "#2c4765",
-                "#fff",
-                "#3ea2ff",
-                "#e7f2fb",
-                "#0367c4",
-                "#4844ff",
-                "#ffffff",
-                "#2c4765", "#ffffff", "#2c4765"), Gr4vyBorderWidths("thin", "thin"), Gr4vyRadii("subtle", "subtle"), Gr4vyShadows
-            ("0 0 0 2px #ffffff, 0 0 0 4px #4844ff")
-            ),
+            debugMode = true
         )
     }
 
     override fun onGr4vyResult(result: Gr4vyResult) {
         when(result) {
             is Gr4vyResult.GeneralError -> startActivity(Intent(this, FailureActivity::class.java))
+            is Gr4vyResult.Cancelled -> startActivity(Intent(this, CancelledActivity::class.java))
             is Gr4vyResult.TransactionCreated -> startActivity(Intent(this, SuccessActivity::class.java))
             is Gr4vyResult.TransactionFailed -> startActivity(Intent(this, FailureActivity::class.java))
         }

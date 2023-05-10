@@ -31,7 +31,7 @@ class Gr4vySDK(
             if (result != null) {
                 handler.onGr4vyResult(result)
             } else {
-                handler.onGr4vyResult(Gr4vyResult.GeneralError())
+                handler.onGr4vyResult(Gr4vyResult.Cancelled())
             }
         }
     }
@@ -47,6 +47,21 @@ class Gr4vySDK(
      * @param currency the currency to use. For example "GBP" for British Pounds
      * @param country a short country code. For example "GB"
      * @param buyerId BuyerId is an optional Identifier that can be set to distinguish a customer
+     * @param externalIdentifier An optional external identifier that can be supplied. This will automatically be associated to any resource created by Gr4vy and can subsequently be used to find a resource by that ID.
+     * @param store Explicitly store the payment method or ask the buyer, this is used when a buyerId is provided.
+     * @param display Filters the payment methods to show stored methods only, new payment methods only or methods that support tokenization.
+     * @param intent Defines the intent of this API call. This determines the desired initial state of the transaction.
+     * @param cartItems An optional array of cart item objects
+     * @param paymentSource Can be used to signal that Embed is used to capture the first transaction for a subscription or an installment.
+     * @param metadata An optional dictionary of key/values for transaction metadata. All values should be a string.
+     * @param theme Theme customisation options.
+     * @param buyerExternalIdentifier An optional external ID for a Gr4vy buyer.
+     * @param locale An optional locale, this consists of a ISO 639 Language Code followed by an optional ISO 3166 Country Code
+     * @param statementDescriptor An optional object with information about the purchase to construct the statement information the buyer will see in their bank statement.
+     * @param requireSecurityCode An optional boolean which forces security code to be prompted for stored card payments.
+     * @param shippingDetailsId An optional unique identifier of a set of shipping details stored for the buyer.
+     * @param merchantAccountId An optional merchant account ID.
+     * @param debugMode Enables debug mode.
      */
     fun launch(
         context: Context,
@@ -69,7 +84,9 @@ class Gr4vySDK(
         locale: String? = null,
         statementDescriptor: @RawValue Gr4vyStatementDescriptor? = null,
         requireSecurityCode: Boolean? = null,
-        shippingDetailsId: String? = null
+        shippingDetailsId: String? = null,
+        merchantAccountId: String? = null,
+        debugMode: Boolean = false,
     ) {
 
         if(!isSupported()) {
@@ -77,7 +94,7 @@ class Gr4vySDK(
             return
         }
 
-        val config: Config = Config.fromContextWithParams(context, gr4vyId, environment)
+        val config: Config = Config.fromContextWithParams(context, gr4vyId, environment, debugMode)
 
         val parameters = Parameters(
             config = config,
@@ -99,7 +116,8 @@ class Gr4vySDK(
             locale = locale,
             statementDescriptor = statementDescriptor,
             requireSecurityCode = requireSecurityCode,
-            shippingDetailsId = shippingDetailsId
+            shippingDetailsId = shippingDetailsId,
+            merchantAccountId = merchantAccountId
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)
