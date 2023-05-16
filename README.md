@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.gr4vy:gr4vy-android:v1.5.1'
+  implementation 'com.github.gr4vy:gr4vy-android:v1.6.0'
 }
 ```
 
@@ -101,6 +101,8 @@ These are the options available in this SDK:
 | `statementDescriptor`| `Optional`       | An optional object with information about the purchase to construct the statement information the buyer will see in their bank statement. Please note support for these fields varies across payment service providers and underlying banks, so Gr4vy can only ensure a best effort approach for each supported platform. As an example, most platforms will only support a concatenation of `name` and `description` fields, this is truncated to a length of 22 characters within embed. The object can contain `name`, `description`, `phoneNumber`, `city` and `url` properties, with string values. `phoneNumber` should be in E164 format. Gr4vy recommends avoiding characters outside the alphanumeric range and the dot (`.`) to ensure wide compatibility. |
 | `requireSecurityCode`| `Optional`       | An optional boolean which forces security code to be prompted for stored card payments. |
 | `shippingDetailsId`| `Optional`       | An optional unique identifier of a set of shipping details stored for the buyer. |
+| `merchantAccountId`| `Optional`       | An optional merchant account ID. |
+| `debugMode`| `Optional`       | `true`, `false`. Defaults to `false`, this prints to the console. |
 
 ### Step 3. Handle events from Gr4vy
 
