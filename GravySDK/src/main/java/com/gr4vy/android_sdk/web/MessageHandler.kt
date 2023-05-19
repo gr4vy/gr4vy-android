@@ -19,6 +19,7 @@ class MessageHandler(private val parameters: Parameters, private val isGooglePay
 
         return when (decodedMessage) {
             is UnknownMessage -> Unknown()
+            is OpenLinkMessage -> OpenLink(decodedMessage.data.url)
             is ApprovalMessage -> Open3ds(decodedMessage.data)
             is GoogleStartSessionMessage -> StartGooglePay(decodedMessage.data)
             is FrameReadyMessage -> {
@@ -61,6 +62,7 @@ class MessageHandler(private val parameters: Parameters, private val isGooglePay
 sealed class MessageHandlerResult
 class UpdateNavigation(val navigationData: Navigation) : MessageHandlerResult()
 class Open3ds(val url: String) : MessageHandlerResult()
+class OpenLink(val url: String) : MessageHandlerResult()
 class Gr4vyMessageResult(val result: Gr4vyResult) : MessageHandlerResult()
 class FrameReady(val js: String) : MessageHandlerResult()
 class StartGooglePay(val googleSessionData: GoogleSession) : MessageHandlerResult()

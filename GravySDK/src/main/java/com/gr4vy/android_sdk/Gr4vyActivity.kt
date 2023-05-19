@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -14,6 +15,7 @@ import android.view.MenuItem
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
@@ -51,6 +53,7 @@ class Gr4vyActivity : AppCompatActivity() {
         setContentView(R.layout.activity_gr4vy)
         setSupportActionBar(findViewById(R.id.gr4vy_toolbar))
 
+        supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (parameters.theme?.colors?.headerBackground != null && parameters.theme?.colors?.headerBackground!!.isNotEmpty()) {
@@ -109,6 +112,7 @@ class Gr4vyActivity : AppCompatActivity() {
                 )
             ).apply {
                 this.open3dsListener = { url -> open3ds(url) }
+                this.openLinkListener = { url -> openLink(url) }
                 this.startGooglePayListener = { data: GoogleSession ->
                     googlePayClient.pay(
                         this@Gr4vyActivity,
@@ -232,6 +236,12 @@ class Gr4vyActivity : AppCompatActivity() {
     }
 
     private fun open3ds(url: String) = Secure3DActivity.startForResult(url, parameters, this)
+
+    private fun openLink(url: String) {
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(url))
+    }
 
     private fun initialUrl(): String = UrlFactory.fromParameters(parameters)
 

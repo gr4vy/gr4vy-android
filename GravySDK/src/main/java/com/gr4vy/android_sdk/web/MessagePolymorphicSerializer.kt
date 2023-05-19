@@ -21,6 +21,7 @@ class MessagePolymorphicSerializer : JsonContentPolymorphicSerializer<Message>(M
             "transactionCreated" -> TransactionMessage.serializer()
             "googlePaySessionStart" -> GoogleStartSessionMessage.serializer()
             "navigation" -> NavigationMessage.serializer()
+            "openLink" -> OpenLinkMessage.serializer()
             else -> UnknownMessage.serializer()
         }
     }
