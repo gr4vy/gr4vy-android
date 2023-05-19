@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
     override fun onGr4vyResult(result: Gr4vyResult) {
         when(result) {
             is Gr4vyResult.GeneralError -> startActivity(Intent(this, FailureActivity::class.java))
-            is Gr4vyResult.Cancelled -> startActivity(Intent(this, CancelledActivity::class.java))
+            is Gr4vyResult.Cancelled -> print("User Cancelled")
             is Gr4vyResult.TransactionCreated -> startActivity(Intent(this, SuccessActivity::class.java))
             is Gr4vyResult.TransactionFailed -> startActivity(Intent(this, FailureActivity::class.java))
         }

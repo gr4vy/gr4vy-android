@@ -19,6 +19,11 @@ data class Navigation(
 )
 
 @Serializable
+data class OpenLink(
+    val url: String
+)
+
+@Serializable
 sealed class Message
 
 @Serializable
@@ -56,6 +61,11 @@ data class GoogleStartSessionMessage(
     val type: String,
     val channel: String,
     val data: GoogleSession,
+) : Message()
+
+@Serializable
+data class OpenLinkMessage(
+    val data: OpenLink,
 ) : Message()
 
 @Serializable

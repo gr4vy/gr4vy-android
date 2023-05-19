@@ -14,6 +14,7 @@ class WebAppInterface(private val messageHandler: MessageHandler) :
     WebViewCompat.WebMessageListener {
 
     var open3dsListener: ((url: String) -> Unit)? = null
+    var openLinkListener: ((url: String) -> Unit)? = null
     var startGooglePayListener: ((data: GoogleSession) -> Unit)? = null
     var navigationListener: ((data: Navigation) -> Unit)? = null
     var callback: ((result: Gr4vyResult) -> Unit)? = null
@@ -33,6 +34,7 @@ class WebAppInterface(private val messageHandler: MessageHandler) :
                 is FrameReady -> view.evaluateJavascript(result.js, null)
                 is Gr4vyMessageResult -> callback?.invoke(result.result)
                 is Open3ds -> open3dsListener?.invoke(result.url)
+                is OpenLink -> openLinkListener?.invoke(result.url)
                 is StartGooglePay -> startGooglePayListener?.invoke(result.googleSessionData)
                 is UpdateNavigation -> navigationListener?.invoke(result.navigationData)
                 else -> Log.d("Gr4vy", "Unknown message received")

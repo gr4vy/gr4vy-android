@@ -38,6 +38,7 @@ class Secure3DActivity : AppCompatActivity() {
         setContentView(R.layout.activity_gr4vy)
         setSupportActionBar(findViewById(R.id.gr4vy_toolbar))
 
+        supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (parameters.theme?.colors?.headerBackground != null && parameters.theme?.colors?.headerBackground!!.isNotEmpty()) {
