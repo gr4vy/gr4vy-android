@@ -6,9 +6,7 @@ import android.webkit.WebView
 import androidx.webkit.JavaScriptReplyProxy
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebViewCompat
-import com.gr4vy.android_sdk.models.GoogleSession
-import com.gr4vy.android_sdk.models.Gr4vyResult
-import com.gr4vy.android_sdk.models.Navigation
+import com.gr4vy.android_sdk.models.*
 
 class WebAppInterface(private val messageHandler: MessageHandler) :
     WebViewCompat.WebMessageListener {
@@ -17,7 +15,7 @@ class WebAppInterface(private val messageHandler: MessageHandler) :
     var openLinkListener: ((url: String) -> Unit)? = null
     var startGooglePayListener: ((data: GoogleSession) -> Unit)? = null
     var navigationListener: ((data: Navigation) -> Unit)? = null
-    var callback: ((result: Gr4vyResult) -> Unit)? = null
+    var callback: ((result: Gr4vyResultEventInterface) -> Unit)? = null
 
     override fun onPostMessage(
         view: WebView,

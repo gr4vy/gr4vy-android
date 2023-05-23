@@ -25,10 +25,7 @@ import androidx.webkit.WebViewFeature
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.wallet.PaymentData
 import com.gr4vy.android_sdk.google_pay.GooglePayClient
-import com.gr4vy.android_sdk.models.GoogleSession
-import com.gr4vy.android_sdk.models.Gr4vyResult
-import com.gr4vy.android_sdk.models.Navigation
-import com.gr4vy.android_sdk.models.Parameters
+import com.gr4vy.android_sdk.models.*
 import com.gr4vy.android_sdk.web.MessageHandler
 import com.gr4vy.android_sdk.web.MyWebChromeClient
 import com.gr4vy.android_sdk.web.UrlFactory
@@ -225,14 +222,16 @@ class Gr4vyActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun handleCallback(result: Gr4vyResult) {
-
-        val resultIntent = Intent().apply {
-            this.putExtra(RESULT_KEY, result)
+    private fun handleCallback(result: Gr4vyResultEventInterface) {
+        if (result is Gr4vyEvent) {
+            sendBroadcast(Intent(Gr4vySDK.BROADCAST_KEY).putExtra(EVENT_KEY, result as Gr4vyEvent))
+        } else {
+            val resultIntent = Intent().apply {
+                this.putExtra(RESULT_KEY, result as Gr4vyResult)
+            }
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
         }
-
-        setResult(Activity.RESULT_OK, resultIntent)
-        finish()
     }
 
     private fun open3ds(url: String) = Secure3DActivity.startForResult(url, parameters, this)
@@ -249,6 +248,7 @@ class Gr4vyActivity : AppCompatActivity() {
 
         private const val PARAMETERS_EXTRA_KEY = "PARAMETERS"
         const val RESULT_KEY = "GR4VY_RESULT"
+        const val EVENT_KEY = "GR4VY_EVENT"
 
         fun createIntentWithParameters(context: Context, parameters: Parameters): Intent {
             return Intent(context, Gr4vyActivity::class.java).apply {

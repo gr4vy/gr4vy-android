@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.gr4vy:gr4vy-android:v1.6.1'
+  implementation 'com.github.gr4vy:gr4vy-android:v1.6.2'
 }
 ```
 
@@ -113,12 +113,18 @@ override fun onGr4vyResult(result: Gr4vyResult) {
         when(result) {
             is Gr4vyResult.GeneralError -> startActivity(Intent(this, FailureActivity::class.java))
             is Gr4vyResult.TransactionCreated -> startActivity(Intent(this, SuccessActivity::class.java))
-            is Gr4vyResult.TransactionFailed -> startActivity(Intent(this, FailureActivity::class.java))
+            is Gr4vyResult.Cancelled -> print("User Cancelled")
+        }
+    }
+
+override fun onGr4vyEvent(event: Gr4vyEvent) {
+        when(event) {
+            is Gr4vyResult.TransactionFailed -> print("Transaction Failed")
         }
     }
 ```
 
-#### `transactionCreated`
+#### `Gr4vyResult.TransactionCreated`
 
 Returns a data about the transaction object when the transaction was successfully created.
 
@@ -130,25 +136,28 @@ Returns a data about the transaction object when the transaction was successfull
 }
 ```
 
-#### `transactionFailed`
-
-Returned when the transaction encounters an error.
-
-```json
-{
-  "transactionID": "8724fd24-5489-4a5d-90fd-0604df7d3b83",
-  "status": "pending",
-  "paymentMethodID": "17d57b9a-408d-49b8-9a97-9db382593003"
-}
-```
-
-#### `generalError`
+#### `Gr4vyResult.GeneralError`
 
 Returned when the SDK encounters an error.
 
 ```json
 {
   "Gr4vy Error: Failed to load"
+}
+```
+
+#### `Gr4vyResult.Cancelled`
+
+Returned when the user cancels/quits the SDK.
+
+
+#### `Gr4vyResult.TransactionFailed`
+
+Returned when the transaction encounters an error.
+
+```json
+{
+  "status": "authorization_failed",
 }
 ```
 
