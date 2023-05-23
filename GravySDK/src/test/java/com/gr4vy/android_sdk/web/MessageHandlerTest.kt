@@ -1,9 +1,6 @@
 package com.gr4vy.android_sdk.web
 
-import com.gr4vy.android_sdk.models.CartItem
-import com.gr4vy.android_sdk.models.Gr4vyMetaData
-import com.gr4vy.android_sdk.models.Gr4vyResult
-import com.gr4vy.android_sdk.models.PaymentSource
+import com.gr4vy.android_sdk.models.*
 import junit.framework.TestCase
 import org.junit.Test
 
@@ -207,6 +204,6 @@ class MessageHandlerTest : TestCase() {
 
         val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result
 
-        assertEquals(expectedStatus, (gr4vyResult as Gr4vyResult.TransactionFailed).status)
+        assertEquals(expectedStatus, (gr4vyResult as Gr4vyEvent.TransactionFailed).status)
     }
 }

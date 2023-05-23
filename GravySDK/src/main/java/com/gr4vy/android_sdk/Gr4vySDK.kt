@@ -1,21 +1,25 @@
 package com.gr4vy.android_sdk
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.webkit.WebViewFeature
 import com.gr4vy.android_sdk.models.*
 import kotlinx.parcelize.RawValue
 
+
 class Gr4vySDK(
     private val registry: ActivityResultRegistry,
     private val handler: Gr4vyResultHandler,
-    context: Context
+    private val context: Context
 ) : DefaultLifecycleObserver {
 
     private lateinit var launchGr4vy: ActivityResultLauncher<Intent>
@@ -34,6 +38,19 @@ class Gr4vySDK(
                 handler.onGr4vyResult(Gr4vyResult.Cancelled())
             }
         }
+        val gr4vyBroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+
+                val event = intent.getParcelableExtra<Parameters>(
+                    Gr4vyActivity.EVENT_KEY
+                ) as Gr4vyEvent
+
+                handler.onGr4vyEvent(event)
+            }
+        }
+
+        val filter = IntentFilter(Gr4vySDK.BROADCAST_KEY)
+        context.registerReceiver(gr4vyBroadcastReceiver, filter)
     }
 
     /**
@@ -134,8 +151,13 @@ class Gr4vySDK(
     fun isSupported(): Boolean {
         return WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)
     }
+
+    companion object {
+        const val BROADCAST_KEY = "GR4VY"
+    }
 }
 
 interface Gr4vyResultHandler {
     fun onGr4vyResult(result: Gr4vyResult)
+    fun onGr4vyEvent(event: Gr4vyEvent)
 }

@@ -41,17 +41,19 @@ class MessageHandler(private val parameters: Parameters, private val isGooglePay
                             )
                         )
                     }
-                    "capture_declined", "authorization_failed" -> {
+                    "capture_declined", "authorization_failed", "authorization_declined" -> {
                         return Gr4vyMessageResult(
-                            Gr4vyResult.TransactionFailed(
-                                status = decodedMessage.data.status,
-                                paymentMethodId = decodedMessage.data.paymentMethodId,
-                                transactionId = decodedMessage.data.transactionId,
+                            Gr4vyEvent.TransactionFailed(
+                                status = decodedMessage.data.status
                             )
                         )
                     }
                     else -> {
-                        return Gr4vyMessageResult(Gr4vyResult.GeneralError())
+                        return Gr4vyMessageResult(
+                            Gr4vyEvent.TransactionFailed(
+                                status = decodedMessage.data.status
+                            )
+                        )
                     }
                 }
             }
@@ -63,7 +65,7 @@ sealed class MessageHandlerResult
 class UpdateNavigation(val navigationData: Navigation) : MessageHandlerResult()
 class Open3ds(val url: String) : MessageHandlerResult()
 class OpenLink(val url: String) : MessageHandlerResult()
-class Gr4vyMessageResult(val result: Gr4vyResult) : MessageHandlerResult()
+class Gr4vyMessageResult(val result: Gr4vyResultEventInterface) : MessageHandlerResult()
 class FrameReady(val js: String) : MessageHandlerResult()
 class StartGooglePay(val googleSessionData: GoogleSession) : MessageHandlerResult()
 class Unknown : MessageHandlerResult()
