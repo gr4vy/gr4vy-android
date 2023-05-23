@@ -151,7 +151,7 @@ Returned when the SDK encounters an error.
 Returned when the user cancels/quits the SDK.
 
 
-#### `Gr4vyResult.TransactionFailed`
+#### `Gr4vyEvent.TransactionFailed`
 
 Returned when the transaction encounters an error.
 
