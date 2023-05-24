@@ -8,6 +8,8 @@ interface Gr4vyResultEventInterface
 sealed class Gr4vyEvent : Parcelable, Gr4vyResultEventInterface {
     @Parcelize
     class TransactionFailed(
-        val status: String
+        val transactionId: String?,
+        val status: String,
+        val paymentMethodId: String?
     ) : Gr4vyEvent()
 }
