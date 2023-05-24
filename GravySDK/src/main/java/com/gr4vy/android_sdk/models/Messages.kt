@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Transaction(
     val status: String,
-    @SerialName("id") val transactionId: String,
+    @SerialName("id") val transactionId: String?,
     @SerialName("paymentMethodID") val paymentMethodId: String?
 )
 

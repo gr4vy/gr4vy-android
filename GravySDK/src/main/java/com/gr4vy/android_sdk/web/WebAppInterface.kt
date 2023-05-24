@@ -43,7 +43,7 @@ class WebAppInterface(private val messageHandler: MessageHandler) :
                     "Gr4vy",
                     "Error handling message: ${exception.message}"
                 )
-                callback?.invoke(Gr4vyResult.GeneralError())
+                callback?.invoke(Gr4vyResult.GeneralError(exception.message))
             }
     }
 }

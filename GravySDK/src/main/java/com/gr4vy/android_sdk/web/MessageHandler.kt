@@ -44,14 +44,18 @@ class MessageHandler(private val parameters: Parameters, private val isGooglePay
                     "capture_declined", "authorization_failed", "authorization_declined" -> {
                         return Gr4vyMessageResult(
                             Gr4vyEvent.TransactionFailed(
-                                status = decodedMessage.data.status
+                                status = decodedMessage.data.status,
+                                paymentMethodId = decodedMessage.data.paymentMethodId,
+                                transactionId = decodedMessage.data.transactionId,
                             )
                         )
                     }
                     else -> {
                         return Gr4vyMessageResult(
                             Gr4vyEvent.TransactionFailed(
-                                status = decodedMessage.data.status
+                                status = decodedMessage.data.status,
+                                paymentMethodId = decodedMessage.data.paymentMethodId,
+                                transactionId = decodedMessage.data.transactionId,
                             )
                         )
                     }
