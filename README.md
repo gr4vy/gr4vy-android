@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.4.0-yellowgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.6.4-yellowgreen?style=for-the-badge)
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
 
