@@ -51,16 +51,44 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
         val buyerId = "<BUYER ID HERE>"
         val gr4vyId = "<GR4VY ID HERE>"
 
+        val items = ArrayList<CartItem>()
+        val categories = ArrayList<String>()
+        categories.add("test")
+        categories.add("cat2")
+        val item1 = CartItem("itemName", 1, 10973, discountAmount = 100, taxAmount = 0, categories = categories)
+        items.add(item1)
         gr4vySDK.launch(
             context = this,
             gr4vyId = gr4vyId,
-            token = token,
             environment = "sandbox",
+            token = token,
             amount = 10873,
-            currency = "GBP",
-            country = "GB",
+            currency = "USD",
+            country = "US",
             buyerId = buyerId,
-            debugMode = true
+            debugMode = true,
+            cartItems = items,
+            theme = Gr4vyTheme(Gr4vyFonts("google:Lato, Tahoma, Arial"), Gr4vyColours("#ffffff", "#a1b0bd",
+                "#fff",
+                "#fff",
+                "#1d334b",
+                "#1d334b",
+                "#2c4765",
+                "#304c6a",
+                "#f2f2f2",
+                "#2a4159",
+                "#fff",
+                "#ff556a",
+                "#2c4765",
+                "#fff",
+                "#3ea2ff",
+                "#e7f2fb",
+                "#0367c4",
+                "#4844ff",
+                "#ffffff",
+                "#2c4765", "#ffffff", "#2c4765"), Gr4vyBorderWidths("thin", "thin"), Gr4vyRadii("subtle", "subtle"), Gr4vyShadows
+            ("0 0 0 2px #ffffff, 0 0 0 4px #4844ff")
+            ),
         )
     }
 
