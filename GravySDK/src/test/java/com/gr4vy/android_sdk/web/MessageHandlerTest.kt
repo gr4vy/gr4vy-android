@@ -59,7 +59,7 @@ class MessageHandlerTest : TestCase() {
                         "\"buyerId\":\"buyerId\"," +
                         "\"externalIdentifier\":\"$expectedExternalIdentifier\"," +
                         "\"cartItems\":[" +
-                        "{\"name\":\"$expectedCartItemName\",\"quantity\":$expectedCartItemQuantity,\"unitAmount\":$expectedCartItemUnitAmount}" +
+                        "{\"name\":\"$expectedCartItemName\",\"quantity\":$expectedCartItemQuantity,\"unitAmount\":$expectedCartItemUnitAmount,\"discountAmount\":0,\"taxAmount\":0}" +
                         "]," +
                         "\"paymentSource\":\"installment\"," +
                         "\"metadata\":{" +
