@@ -9,4 +9,12 @@ import kotlinx.serialization.Serializable
 data class CartItem(
     val name: String,
     val quantity: Int,
-    val unitAmount: Int) : Parcelable
+    val unitAmount: Int,
+    val discountAmount:Int? = 0,
+    val taxAmount:Int? = 0,
+    val externalIdentifier:String? = null,
+    val sku: String? = null,
+    val productUrl: String? = null,
+    val imageUrl: String? = null,
+    val categories: List<String>? = null,
+    val productType: String? = null) : Parcelable

@@ -145,7 +145,15 @@ data class Update(
 data class UpdateCartItem(
     val name: String,
     val quantity: Int,
-    val unitAmount: Int) {
+    val unitAmount: Int,
+    val discountAmount:Int?,
+    val taxAmount:Int?,
+    val externalIdentifier:String?,
+    val sku: String?,
+    val productUrl: String?,
+    val imageUrl: String?,
+    val categories: List<String>?,
+    val productType: String?) {
 
     companion object {
 
@@ -153,7 +161,15 @@ data class UpdateCartItem(
             return UpdateCartItem(
                 name = item.name,
                 quantity = item.quantity,
-                unitAmount = item.unitAmount)
+                unitAmount = item.unitAmount,
+                discountAmount = item.discountAmount,
+                taxAmount = item.taxAmount,
+                externalIdentifier = item.externalIdentifier,
+                sku = item.sku,
+                productUrl = item.productUrl,
+                imageUrl = item.imageUrl,
+                categories = item.categories,
+                productType = item.productType)
         }
     }
 }
