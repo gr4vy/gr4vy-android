@@ -23,6 +23,14 @@ import androidx.compose.ui.unit.sp
 import com.gr4vy.gr4vy_android_sample.ui.theme.GravyAndroidSDKSampleTheme
 import com.gr4vy.android_sdk.*
 import com.gr4vy.android_sdk.models.*
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.add
+import kotlinx.serialization.json.JsonArray
+
 
 class MainActivity : ComponentActivity(), Gr4vyResultHandler {
 
@@ -51,12 +59,19 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
         val buyerId = "<BUYER ID HERE>"
         val gr4vyId = "<GR4VY ID HERE>"
 
+        val connectionOptions: Map<String, JsonElement> = mapOf(
+            "forter-anti-fraud" to buildJsonObject {
+                put("is_guest_buyer", JsonPrimitive(false))
+            }
+        )
+
         val items = ArrayList<CartItem>()
         val categories = ArrayList<String>()
         categories.add("test")
         categories.add("cat2")
         val item1 = CartItem("itemName", 1, 10973, discountAmount = 100, taxAmount = 0, categories = categories)
         items.add(item1)
+        
         gr4vySDK.launch(
             context = this,
             gr4vyId = gr4vyId,
@@ -87,8 +102,9 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
                 "#4844ff",
                 "#ffffff",
                 "#2c4765", "#ffffff", "#2c4765"), Gr4vyBorderWidths("thin", "thin"), Gr4vyRadii("subtle", "subtle"), Gr4vyShadows
-            ("0 0 0 2px #ffffff, 0 0 0 4px #4844ff")
+            ("0 0 0 2px #ffffff, 0 0 0 4px #4844ff"),
             ),
+            connectionOptions = connectionOptions,
         )
     }
 

@@ -10,11 +10,10 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.webkit.WebViewFeature
 import com.gr4vy.android_sdk.models.*
 import kotlinx.parcelize.RawValue
-
+import kotlinx.serialization.json.*
 
 class Gr4vySDK(
     private val registry: ActivityResultRegistry,
@@ -103,6 +102,7 @@ class Gr4vySDK(
         requireSecurityCode: Boolean? = null,
         shippingDetailsId: String? = null,
         merchantAccountId: String? = null,
+        connectionOptions: Map<String, JsonElement>? = null,
         debugMode: Boolean = false,
     ) {
 
@@ -112,6 +112,12 @@ class Gr4vySDK(
         }
 
         val config: Config = Config.fromContextWithParams(context, gr4vyId, environment, debugMode)
+
+        fun mapToJsonString(map: Map<String, JsonElement>?): String? {
+            if (map == null) return null
+            val jsonObject = JsonObject(map)
+            return Json.encodeToString(JsonElement.serializer(), jsonObject)
+        }
 
         val parameters = Parameters(
             config = config,
@@ -134,7 +140,8 @@ class Gr4vySDK(
             statementDescriptor = statementDescriptor,
             requireSecurityCode = requireSecurityCode,
             shippingDetailsId = shippingDetailsId,
-            merchantAccountId = merchantAccountId
+            merchantAccountId = merchantAccountId,
+            connectionOptions = mapToJsonString(connectionOptions)
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)

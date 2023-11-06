@@ -4,6 +4,10 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class Transaction(
@@ -84,6 +88,17 @@ data class UpdateMessage(
 
         fun fromParameters(parameters: Parameters, isGooglePayEnabled: Boolean): UpdateMessage {
 
+            fun jsonStringToMap(jsonString: String?): Map<String, JsonElement>? {
+                if (jsonString != null) {
+                    return if (jsonString.isBlank()) {
+                        null
+                    } else {
+                        Json.decodeFromString(MapSerializer(String.serializer(), JsonElement.serializer()), jsonString)
+                    }
+                }
+                return null
+            }
+
             return UpdateMessage(
                 type = "updateOptions",
                 data = Update(
@@ -109,6 +124,7 @@ data class UpdateMessage(
                     requireSecurityCode =  parameters.requireSecurityCode,
                     shippingDetailsId =  parameters.shippingDetailsId,
                     merchantAccountId = parameters.merchantAccountId,
+                    connectionOptions = jsonStringToMap(parameters.connectionOptions)
                 )
             )
         }
@@ -138,7 +154,8 @@ data class Update(
     val statementDescriptor: Gr4vyStatementDescriptor? = null,
     val requireSecurityCode: Boolean? = null,
     val shippingDetailsId: String? = null,
-    val merchantAccountId: String? = null
+    val merchantAccountId: String? = null,
+    val connectionOptions: Map<String, JsonElement>? = null
 )
 
 @Serializable

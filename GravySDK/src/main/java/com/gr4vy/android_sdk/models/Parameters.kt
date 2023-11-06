@@ -3,6 +3,7 @@ package com.gr4vy.android_sdk.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import kotlinx.serialization.json.JsonElement
 
 @Parcelize
 data class Parameters(
@@ -26,7 +27,8 @@ data class Parameters(
     val statementDescriptor: Gr4vyStatementDescriptor? = null,
     val requireSecurityCode: Boolean? = null,
     val shippingDetailsId: String? = null,
-    val merchantAccountId: String? = null
+    val merchantAccountId: String? = null,
+    val connectionOptions: String? = null,
 ) : Parcelable {
     init {
         require(token.isNotBlank()) { "Gr4vy token was blank" }
