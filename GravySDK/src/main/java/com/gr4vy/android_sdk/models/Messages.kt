@@ -1,12 +1,10 @@
 package com.gr4vy.android_sdk.models
 
 import android.os.Parcelable
+import com.gr4vy.android_sdk.gr4vyConvertJSONStringToMap
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.MapSerializer
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
@@ -88,17 +86,6 @@ data class UpdateMessage(
 
         fun fromParameters(parameters: Parameters, isGooglePayEnabled: Boolean): UpdateMessage {
 
-            fun jsonStringToMap(jsonString: String?): Map<String, JsonElement>? {
-                if (jsonString != null) {
-                    return if (jsonString.isBlank()) {
-                        null
-                    } else {
-                        Json.decodeFromString(MapSerializer(String.serializer(), JsonElement.serializer()), jsonString)
-                    }
-                }
-                return null
-            }
-
             return UpdateMessage(
                 type = "updateOptions",
                 data = Update(
@@ -124,7 +111,7 @@ data class UpdateMessage(
                     requireSecurityCode =  parameters.requireSecurityCode,
                     shippingDetailsId =  parameters.shippingDetailsId,
                     merchantAccountId = parameters.merchantAccountId,
-                    connectionOptions = jsonStringToMap(parameters.connectionOptions)
+                    connectionOptions = gr4vyConvertJSONStringToMap(parameters.connectionOptions)
                 )
             )
         }

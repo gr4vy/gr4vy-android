@@ -13,6 +13,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.webkit.WebViewFeature
 import com.gr4vy.android_sdk.models.*
 import kotlinx.parcelize.RawValue
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.*
 
 class Gr4vySDK(
@@ -29,7 +31,8 @@ class Gr4vySDK(
             owner,
             ActivityResultContracts.StartActivityForResult()
         ) { activityResult ->
-            val result = activityResult.data?.getParcelableExtra<Gr4vyResult>(Gr4vyActivity.RESULT_KEY)
+            val result =
+                activityResult.data?.getParcelableExtra<Gr4vyResult>(Gr4vyActivity.RESULT_KEY)
 
             if (result != null) {
                 handler.onGr4vyResult(result)
@@ -106,18 +109,12 @@ class Gr4vySDK(
         debugMode: Boolean = false,
     ) {
 
-        if(!isSupported()) {
+        if (!isSupported()) {
             Log.e("Gr4vy", "Gr4vy is not supported on this device")
             return
         }
 
         val config: Config = Config.fromContextWithParams(context, gr4vyId, environment, debugMode)
-
-        fun mapToJsonString(map: Map<String, JsonElement>?): String? {
-            if (map == null) return null
-            val jsonObject = JsonObject(map)
-            return Json.encodeToString(JsonElement.serializer(), jsonObject)
-        }
 
         val parameters = Parameters(
             config = config,
@@ -141,7 +138,7 @@ class Gr4vySDK(
             requireSecurityCode = requireSecurityCode,
             shippingDetailsId = shippingDetailsId,
             merchantAccountId = merchantAccountId,
-            connectionOptions = mapToJsonString(connectionOptions)
+            connectionOptions = gr4vyMapToJsonString(connectionOptions)
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)
@@ -162,6 +159,28 @@ class Gr4vySDK(
     companion object {
         const val BROADCAST_KEY = "GR4VY"
     }
+}
+
+//Used for connectionOptions
+fun gr4vyMapToJsonString(map: Map<String, JsonElement>?): String? {
+    if (map == null) return null
+    if (map.isEmpty()) return null
+    val jsonObject = JsonObject(map)
+    return Json.encodeToString(JsonElement.serializer(), jsonObject)
+}
+
+fun gr4vyConvertJSONStringToMap(jsonString: String?): Map<String, JsonElement>? {
+    if (jsonString != null) {
+        return if (jsonString.isBlank()) {
+            null
+        } else {
+            Json.decodeFromString(
+                MapSerializer(String.serializer(), JsonElement.serializer()),
+                jsonString
+            )
+        }
+    }
+    return null
 }
 
 interface Gr4vyResultHandler {

@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.7.0-yellowgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.7.1-yellowgreen?style=for-the-badge)
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
 
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.gr4vy:gr4vy-android:v1.7.0'
+  implementation 'com.github.gr4vy:gr4vy-android:v1.7.1'
 }
 ```
 
@@ -102,6 +102,7 @@ These are the options available in this SDK:
 | `requireSecurityCode`     | `Optional`          | An optional boolean which forces security code to be prompted for stored card payments.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `shippingDetailsId`       | `Optional`          | An optional unique identifier of a set of shipping details stored for the buyer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `merchantAccountId`       | `Optional`          | An optional merchant account ID.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `connectionOptions`       | `Optional`          | An optional set of options passed to a connection when processing a transaction (see https://docs.gr4vy.com/reference#operation/authorize-new-transaction)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `debugMode`               | `Optional`          | `true`, `false`. Defaults to `false`, this prints to the console.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ### Step 3. Handle events from Gr4vy

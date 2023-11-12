@@ -1,9 +1,7 @@
 package com.gr4vy.android_sdk.web
 
 import android.os.Parcel
-import com.gr4vy.android_sdk.models.IConfig
-import com.gr4vy.android_sdk.models.Parameters
-import com.gr4vy.android_sdk.models.PaymentSource
+import com.gr4vy.android_sdk.models.*
 
 private val testConfig = object: IConfig {
     override val instance = "config-instance"
@@ -33,5 +31,13 @@ val testParameters = Parameters(
     intent = null,
     cartItems = null,
     paymentSource = PaymentSource.NOT_SET,
-    metadata = null
+    metadata = null,
+    theme = null,
+    buyerExternalIdentifier = null,
+    locale = null,
+    statementDescriptor = null,
+    requireSecurityCode = null,
+    shippingDetailsId = null,
+    merchantAccountId = null,
+    connectionOptions = null,
 )
