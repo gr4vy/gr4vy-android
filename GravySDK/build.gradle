@@ -17,6 +17,13 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -31,6 +38,10 @@ android {
         jvmTarget = '1.8'
     }
     namespace 'com.gr4vy.gr4vy_android'
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -58,7 +69,7 @@ afterEvaluate {
 
                 groupId = 'com.gr4vy'
                 artifactId = 'android-sdk'
-                version = '1.0.1'
+                version = '1.7.2'
             }
         }
     }

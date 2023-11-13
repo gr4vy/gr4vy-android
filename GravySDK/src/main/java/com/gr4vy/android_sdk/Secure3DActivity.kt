@@ -71,7 +71,7 @@ class Secure3DActivity : AppCompatActivity() {
 
                         val upArrow = ContextCompat.getDrawable(
                             applicationContext,
-                            R.drawable.abc_ic_ab_back_material
+                            com.google.android.material.R.drawable.abc_ic_ab_back_material
                         )
                         upArrow?.colorFilter =
                             BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
