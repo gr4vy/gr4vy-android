@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class GoogleSession(
     val transactionInfo: TransactionInfo,
     val gateway: String,
+    val gatewayMerchantId: String,
     val allowedAuthMethods: List<String>,
     val allowedCardNetworks: List<String>,
     val merchantInfo: MerchantInfo,
