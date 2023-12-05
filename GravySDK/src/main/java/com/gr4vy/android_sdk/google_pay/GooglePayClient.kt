@@ -54,7 +54,7 @@ class GooglePayClient(private val paymentsClient: PaymentsClient, private val gr
     fun pay(activity: Activity, googleSession: GoogleSession, price: Int) {
 
         val convertedAmount = if (price <= 0) "-0.01" else BigDecimal(price).movePointLeft(2).toString()
-        val request = createPaymentRequest(googleSession, convertedAmount, gr4vyId)
+        val request = createPaymentRequest(googleSession, convertedAmount, googleSession.gatewayMerchantId)
         val paymentRequestData = PaymentDataRequest.fromJson(request.toString())
         AutoResolveHelper.resolveTask(paymentsClient.loadPaymentData(paymentRequestData), activity, REQUEST_CODE)
     }
