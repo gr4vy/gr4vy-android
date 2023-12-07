@@ -164,6 +164,16 @@ Returned when the transaction encounters an error.
 }
 ```
 
+## Contribution
+
+### Release
+The following steps should be done to release a new version:
+
+- Create a pull request that updates the version badge.
+- Create a tag locally of the desired version e.g. v1.2.3
+- Push the tag to the repository, this will initiate a Github action to create a draft release.
+- Publish the draft release
+
 ## License
 
 This project is provided as-is under the [MIT license](LICENSE).
