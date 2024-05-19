@@ -10,6 +10,7 @@ class MessageHandler(private val parameters: Parameters, private val isGooglePay
         classDiscriminator = "theType"
         ignoreUnknownKeys = true
         explicitNulls = false
+        isLenient = true
     }
 
     fun handleMessage(realMessage: String): MessageHandlerResult {

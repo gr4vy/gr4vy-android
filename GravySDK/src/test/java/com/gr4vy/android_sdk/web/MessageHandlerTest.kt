@@ -206,4 +206,20 @@ class MessageHandlerTest : TestCase() {
 
         assertEquals(expectedStatus, (gr4vyResult as Gr4vyEvent.TransactionFailed).status)
     }
+
+    @Test
+    fun testReturnsTransactionFailedWhenJsonMessageIsLenient() {
+
+        val message =
+            "{\"channel\":\"123\",\"type\":\"transactionFailed\",\"data\":{\"status\":400,\"type\":\"error\",\"code\":\"bad_request\",\"message\":\"Request failed validation\",\"details\":[{\"location\":\"body\",\"message\":\"ensure this value has at least 5 characters\",\"pointer\":\"/statement_descriptor/name\",\"type\":\"value_error.any_str.min_length\"}]}}"
+
+
+        val messageHandler = MessageHandler(testParameters)
+
+        val messageHandlerResult = messageHandler.handleMessage(message)
+
+        val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result
+
+        assertEquals("400", (gr4vyResult as Gr4vyEvent.TransactionFailed).status)
+    }
 }
