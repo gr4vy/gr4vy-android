@@ -33,7 +33,7 @@ class MessageHandler(private val parameters: Parameters, private val isGooglePay
             }
             is TransactionMessage -> {
                 when (decodedMessage.data.status) {
-                    "capture_succeeded", "capture_pending", "authorization_succeeded", "authorization_pending" -> {
+                    "capture_succeeded", "capture_pending", "authorization_succeeded", "authorization_pending", "processing" -> {
                         return Gr4vyMessageResult(
                             Gr4vyResult.TransactionCreated(
                                 status = decodedMessage.data.status,
