@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.7.4-yellowgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.8.0-yellowgreen?style=for-the-badge)
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
 
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.gr4vy:gr4vy-android:v1.7.4'
+  implementation 'com.github.gr4vy:gr4vy-android:v1.8.0'
 }
 ```
 
@@ -133,7 +133,8 @@ Returns a data about the transaction object when the transaction was successfull
 {
   "transactionID": "8724fd24-5489-4a5d-90fd-0604df7d3b83",
   "status": "pending",
-  "paymentMethodID": "17d57b9a-408d-49b8-9a97-9db382593003"
+  "paymentMethodID": "17d57b9a-408d-49b8-9a97-9db382593003",
+  "approvalUrl": "https://example.com"
 }
 ```
 

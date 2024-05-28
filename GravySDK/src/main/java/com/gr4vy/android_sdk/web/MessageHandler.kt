@@ -39,6 +39,7 @@ class MessageHandler(private val parameters: Parameters, private val isGooglePay
                                 status = decodedMessage.data.status,
                                 paymentMethodId = decodedMessage.data.paymentMethodId,
                                 transactionId = decodedMessage.data.transactionId,
+                                approvalUrl = decodedMessage.data.paymentMethod?.approvalUrl
                             )
                         )
                     }
