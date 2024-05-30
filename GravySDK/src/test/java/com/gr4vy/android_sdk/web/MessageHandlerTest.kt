@@ -183,6 +183,36 @@ class MessageHandlerTest : TestCase() {
         testReturnsTransactionFailedWhenMessageIs("authorization_failed")
     }
 
+    @Test
+    fun testHandleMessageReturnsTransactionCreatedWhenMessageHasApprovalUrl() {
+
+        val expectedChannel = "123"
+        val expectedStatus = "authorization_pending"
+        val expectedApprovalUrl = "example.com"
+
+        val message =
+            "{" +
+                    "\"type\": \"transactionCreated\", " +
+                    "\"channel\": \"$expectedChannel\", " +
+                    "\"data\": {" +
+                    "\"paymentMethod\": {\"approvalUrl\": \"example.com\"}," +
+                    "\"status\": \"$expectedStatus\"," +
+                    "\"id\": \"$expectedStatus\"," +
+                    "\"paymentMethodID\": \"$expectedStatus\"" +
+                    "}" +
+                    "}"
+
+        val messageHandler = MessageHandler(testParameters)
+
+        val messageHandlerResult = messageHandler.handleMessage(message)
+
+        val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result
+
+        assertEquals(expectedStatus, (gr4vyResult as Gr4vyResult.TransactionCreated).status)
+        assertEquals(expectedApprovalUrl, (gr4vyResult as Gr4vyResult.TransactionCreated).approvalUrl)
+    }
+
+
     private fun testReturnsTransactionFailedWhenMessageIs(expectedStatus: String) {
 
         val expectedChannel = "123"

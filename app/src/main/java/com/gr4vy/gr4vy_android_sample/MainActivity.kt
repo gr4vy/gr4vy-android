@@ -54,9 +54,8 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
 
     private fun launchGr4vy() {
 
-        // TODO: Set your own token, buyerID and gr4vyID here
+        // TODO: Set your own token and gr4vyID here
         val token = "<TOKEN HERE>"
-        val buyerId = "<BUYER ID HERE>"
         val gr4vyId = "<GR4VY ID HERE>"
 
         val connectionOptions: Map<String, JsonElement> = mapOf(
@@ -80,7 +79,6 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
             amount = 10873,
             currency = "USD",
             country = "US",
-            buyerId = buyerId,
             debugMode = true,
             cartItems = items,
             theme = Gr4vyTheme(Gr4vyFonts("google:Lato, Tahoma, Arial"), Gr4vyColours("#ffffff", "#a1b0bd",

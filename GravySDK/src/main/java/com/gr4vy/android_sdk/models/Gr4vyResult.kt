@@ -8,7 +8,8 @@ sealed class Gr4vyResult : Parcelable, Gr4vyResultEventInterface {
     class TransactionCreated(
         val transactionId: String?,
         val status: String,
-        val paymentMethodId: String?
+        val paymentMethodId: String?,
+        val approvalUrl: String?
     ) : Gr4vyResult()
 
     @Parcelize

@@ -11,7 +11,13 @@ import kotlinx.serialization.json.JsonElement
 data class Transaction(
     val status: String,
     @SerialName("id") val transactionId: String?,
-    @SerialName("paymentMethodID") val paymentMethodId: String?
+    @SerialName("paymentMethodID") val paymentMethodId: String?,
+    @SerialName("paymentMethod") val paymentMethod: PaymentMethod?
+)
+
+@Serializable
+data class PaymentMethod(
+    val approvalUrl: String?,
 )
 
 @Serializable
