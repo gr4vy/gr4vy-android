@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.webkit.WebViewFeature
@@ -52,7 +53,7 @@ class Gr4vySDK(
         }
 
         val filter = IntentFilter(Gr4vySDK.BROADCAST_KEY)
-        context.registerReceiver(gr4vyBroadcastReceiver, filter)
+        ContextCompat.registerReceiver(context, gr4vyBroadcastReceiver, filter, ContextCompat.RECEIVER_EXPORTED)
     }
 
     /**
