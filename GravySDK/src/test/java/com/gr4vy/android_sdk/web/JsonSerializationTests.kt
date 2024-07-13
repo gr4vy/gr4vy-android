@@ -1,6 +1,7 @@
 package com.gr4vy.android_sdk.web
 
 import com.gr4vy.android_sdk.gr4vyConvertJSONStringToMap
+import com.gr4vy.android_sdk.gr4vyMapConnectionOptions
 import com.gr4vy.android_sdk.gr4vyMapToJsonString
 import com.gr4vy.android_sdk.gr4vyMapToJsonString
 import junit.framework.TestCase
@@ -16,6 +17,8 @@ class JsonSerializationTests : TestCase() {
         var input: Map<String, JsonElement>? = null
 
         assertNull(gr4vyMapToJsonString(input))
+
+        assertNull(gr4vyMapConnectionOptions(input, null))
     }
 
     @Test
@@ -34,6 +37,11 @@ class JsonSerializationTests : TestCase() {
 
         assertEquals(gr4vyConvertJSONStringToMap(adyenCardInputString), adyenCardInput)
 
+        assertEquals(gr4vyMapConnectionOptions(adyenCardInput, null), adyenCardInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, adyenCardInputString), adyenCardInputString)
+        assertEquals(gr4vyMapConnectionOptions(adyenCardInput, "{\"key1\":{\"subKey1\":\"value\"}}"), adyenCardInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
+
         var cybersourceAntiFraudInput: Map<String, JsonElement>? = mapOf(
             "cybersource-anti-fraud" to buildJsonObject {
                 put("merchant_defined_data", JsonPrimitive("value"))
@@ -50,6 +58,11 @@ class JsonSerializationTests : TestCase() {
             gr4vyConvertJSONStringToMap(cybersourceAntiFraudInputString),
             cybersourceAntiFraudInput
         )
+
+        assertEquals(gr4vyMapConnectionOptions(cybersourceAntiFraudInput, null), cybersourceAntiFraudInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, cybersourceAntiFraudInputString), cybersourceAntiFraudInputString)
+        assertEquals(gr4vyMapConnectionOptions(cybersourceAntiFraudInput, "{\"key1\":{\"subKey1\":\"value\"}}"), cybersourceAntiFraudInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
 
         var forterAntiFraudEmailInput: Map<String, JsonElement>? = mapOf(
             "forter-anti-fraud" to buildJsonObject {
@@ -69,6 +82,11 @@ class JsonSerializationTests : TestCase() {
             forterAntiFraudEmailInput
         )
 
+        assertEquals(gr4vyMapConnectionOptions(forterAntiFraudEmailInput, null), forterAntiFraudEmailInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, forterAntiFraudEmailInputString), forterAntiFraudEmailInputString)
+        assertEquals(gr4vyMapConnectionOptions(forterAntiFraudEmailInput, "{\"key1\":{\"subKey1\":\"value\"}}"), forterAntiFraudEmailInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
+
         var forterAntiFraudPhysicalInput: Map<String, JsonElement>? = mapOf(
             "forter-anti-fraud" to buildJsonObject {
                 put("delivery_type", JsonPrimitive("PHYSICAL"))
@@ -87,6 +105,10 @@ class JsonSerializationTests : TestCase() {
             forterAntiFraudPhysicalInput
         )
 
+        assertEquals(gr4vyMapConnectionOptions(forterAntiFraudPhysicalInput, null), forterAntiFraudPhysicalInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, forterAntiFraudPhysicalInputString), forterAntiFraudPhysicalInputString)
+        assertEquals(gr4vyMapConnectionOptions(forterAntiFraudPhysicalInput, "{\"key1\":{\"subKey1\":\"value\"}}"), forterAntiFraudPhysicalInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
 
         var paypalPaypalInput: Map<String, JsonElement>? = mapOf(
             "paypal-paypal" to buildJsonObject {
@@ -102,6 +124,10 @@ class JsonSerializationTests : TestCase() {
         )
         assertEquals(gr4vyConvertJSONStringToMap(paypalPaypalInputString), paypalPaypalInput)
 
+        assertEquals(gr4vyMapConnectionOptions(paypalPaypalInput, null), paypalPaypalInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, paypalPaypalInputString), paypalPaypalInputString)
+        assertEquals(gr4vyMapConnectionOptions(paypalPaypalInput, "{\"key1\":{\"subKey1\":\"value\"}}"), paypalPaypalInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
 
         var paypalPaypalPayLaterInput: Map<String, JsonElement>? = mapOf(
             "paypal-paypalpaylater" to buildJsonObject {
@@ -121,6 +147,11 @@ class JsonSerializationTests : TestCase() {
             paypalPaypalPayLaterInput
         )
 
+        assertEquals(gr4vyMapConnectionOptions(paypalPaypalPayLaterInput, null), paypalPaypalPayLaterInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, paypalPaypalPayLaterInputString), paypalPaypalPayLaterInputString)
+        assertEquals(gr4vyMapConnectionOptions(paypalPaypalPayLaterInput, "{\"key1\":{\"subKey1\":\"value\"}}"), paypalPaypalPayLaterInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
+
 
         var intInput: Map<String, JsonElement>? = mapOf(
             "int" to buildJsonObject {
@@ -133,6 +164,11 @@ class JsonSerializationTests : TestCase() {
         assertEquals(gr4vyMapToJsonString(intInput), intInputString)
         assertEquals(gr4vyConvertJSONStringToMap(intInputString), intInput)
 
+        assertEquals(gr4vyMapConnectionOptions(intInput, null), intInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, intInputString), intInputString)
+        assertEquals(gr4vyMapConnectionOptions(intInput, "{\"key1\":{\"subKey1\":\"value\"}}"), intInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
+
         var boolInput: Map<String, JsonElement>? = mapOf(
             "bool" to buildJsonObject {
                 put("additional_data", JsonPrimitive(true))
@@ -143,6 +179,10 @@ class JsonSerializationTests : TestCase() {
         assertEquals(gr4vyMapToJsonString(boolInput), boolInputString)
         assertEquals(gr4vyConvertJSONStringToMap(boolInputString), boolInput)
 
+        assertEquals(gr4vyMapConnectionOptions(boolInput, null), boolInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, boolInputString), boolInputString)
+        assertEquals(gr4vyMapConnectionOptions(boolInput, "{\"key1\":{\"subKey1\":\"value\"}}"), boolInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
 
         var stringInput: Map<String, JsonElement>? = mapOf(
             "string" to buildJsonObject {
@@ -151,9 +191,13 @@ class JsonSerializationTests : TestCase() {
         )
         var stringInputString = "{\"string\":{\"additional_data\":\"gr4vy\"}}"
 
-
         assertEquals(gr4vyMapToJsonString(stringInput), stringInputString)
         assertEquals(gr4vyConvertJSONStringToMap(stringInputString), stringInput)
+
+        assertEquals(gr4vyMapConnectionOptions(stringInput, null), stringInputString)
+        assertEquals(gr4vyMapConnectionOptions(null, stringInputString), stringInputString)
+        assertEquals(gr4vyMapConnectionOptions(stringInput, "{\"key1\":{\"subKey1\":\"value\"}}"), stringInputString)
+        assertNull(gr4vyMapConnectionOptions(null, null))
 
         var emptyInput: Map<String, JsonElement>? = mapOf()
 
