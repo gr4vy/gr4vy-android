@@ -81,6 +81,8 @@ class Gr4vySDK(
      * @param requireSecurityCode An optional boolean which forces security code to be prompted for stored card payments.
      * @param shippingDetailsId An optional unique identifier of a set of shipping details stored for the buyer.
      * @param merchantAccountId An optional merchant account ID.
+     * @param connectionOptions An optional connection options list.
+     * @param connectionOptionsString An optional connection options list as a JSON string.
      * @param debugMode Enables debug mode.
      */
     fun launch(
@@ -107,6 +109,7 @@ class Gr4vySDK(
         shippingDetailsId: String? = null,
         merchantAccountId: String? = null,
         connectionOptions: Map<String, JsonElement>? = null,
+        connectionOptionsString: String? = null,
         debugMode: Boolean = false,
     ) {
 
@@ -116,6 +119,7 @@ class Gr4vySDK(
         }
 
         val config: Config = Config.fromContextWithParams(context, gr4vyId, environment, debugMode)
+
 
         val parameters = Parameters(
             config = config,
@@ -139,7 +143,7 @@ class Gr4vySDK(
             requireSecurityCode = requireSecurityCode,
             shippingDetailsId = shippingDetailsId,
             merchantAccountId = merchantAccountId,
-            connectionOptions = gr4vyMapToJsonString(connectionOptions)
+            connectionOptions = gr4vyMapConnectionOptions(connectionOptions, connectionOptionsString)
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)
@@ -162,12 +166,15 @@ class Gr4vySDK(
     }
 }
 
-//Used for connectionOptions
 fun gr4vyMapToJsonString(map: Map<String, JsonElement>?): String? {
     if (map == null) return null
     if (map.isEmpty()) return null
     val jsonObject = JsonObject(map)
     return Json.encodeToString(JsonElement.serializer(), jsonObject)
+}
+
+fun gr4vyMapConnectionOptions(connectionOptions: Map<String, JsonElement>?, connectionOptionsString: String?): String? {
+    return gr4vyMapToJsonString(connectionOptions) ?: connectionOptionsString
 }
 
 fun gr4vyConvertJSONStringToMap(jsonString: String?): Map<String, JsonElement>? {
