@@ -40,4 +40,5 @@ val testParameters = Parameters(
     shippingDetailsId = null,
     merchantAccountId = null,
     connectionOptions = null,
+    buyer = null,
 )
