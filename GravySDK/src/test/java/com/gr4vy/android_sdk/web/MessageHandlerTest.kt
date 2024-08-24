@@ -114,6 +114,50 @@ class MessageHandlerTest : TestCase() {
     }
 
     @Test
+    fun testHandleMessageEncodesBuyerWhenNotNull() {
+
+        val expectedJsonToPost = "{" +
+                "\"type\":\"updateOptions\"," +
+                "\"data\":{" +
+                        "\"apiHost\":\"api.config-instance.gr4vy.app\"," +
+                        "\"apiUrl\":\"https://api.config-instance.gr4vy.app\"," +
+                        "\"token\":\"token\"," +
+                        "\"amount\":10873," +
+                        "\"country\":\"GB\"," +
+                        "\"currency\":\"GBP\"," +
+                        "\"buyer\":{" +
+                            "\"displayName\":\"Test buyer\"," +
+                            "\"billingDetails\":{" +
+                                "\"firstName\":\"Ivy\"," +
+                                "\"address\":{" +
+                                    "\"city\":\"London\"" +
+                                "}" +
+                            "}" +
+                        "}" +
+                    "}" +
+                "}"
+        val expectedJs = "window.postMessage($expectedJsonToPost)"
+
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val messageHandler = MessageHandler(testParameters.copy(
+            buyerId = null,
+            buyer = Gr4vyBuyer(
+                displayName = "Test buyer",
+                billingDetails = Gr4vyBillingShippingDetails(
+                    firstName = "Ivy",
+                    address = Gr4vyAddress(city = "London")
+                )
+            )
+        ))
+
+        val messageHandlerResult = messageHandler.handleMessage(message)
+
+        assert(messageHandlerResult is FrameReady)
+        assertEquals(expectedJs, (messageHandlerResult as FrameReady).js)
+    }
+
+    @Test
     fun testHandleMessageReturnsOpen3dsWhenGivenMessage() {
 
         val expectedUrl = "https://test.com"
