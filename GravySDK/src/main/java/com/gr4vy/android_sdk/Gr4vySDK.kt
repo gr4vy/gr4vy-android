@@ -83,6 +83,7 @@ class Gr4vySDK(
      * @param merchantAccountId An optional merchant account ID.
      * @param connectionOptions An optional connection options list.
      * @param connectionOptionsString An optional connection options list as a JSON string.
+     * @param buyer An optional buyer object to allow guest checkout.
      * @param debugMode Enables debug mode.
      */
     fun launch(
@@ -110,6 +111,7 @@ class Gr4vySDK(
         merchantAccountId: String? = null,
         connectionOptions: Map<String, JsonElement>? = null,
         connectionOptionsString: String? = null,
+        buyer: @RawValue Gr4vyBuyer? = null,
         debugMode: Boolean = false,
     ) {
 
@@ -143,7 +145,8 @@ class Gr4vySDK(
             requireSecurityCode = requireSecurityCode,
             shippingDetailsId = shippingDetailsId,
             merchantAccountId = merchantAccountId,
-            connectionOptions = gr4vyMapConnectionOptions(connectionOptions, connectionOptionsString)
+            connectionOptions = gr4vyMapConnectionOptions(connectionOptions, connectionOptionsString),
+            buyer = buyer,
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)

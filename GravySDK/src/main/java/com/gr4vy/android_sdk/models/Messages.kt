@@ -117,7 +117,8 @@ data class UpdateMessage(
                     requireSecurityCode =  parameters.requireSecurityCode,
                     shippingDetailsId =  parameters.shippingDetailsId,
                     merchantAccountId = parameters.merchantAccountId,
-                    connectionOptions = gr4vyConvertJSONStringToMap(parameters.connectionOptions)
+                    connectionOptions = gr4vyConvertJSONStringToMap(parameters.connectionOptions),
+                    buyer = parameters.buyer
                 )
             )
         }
@@ -148,7 +149,8 @@ data class Update(
     val requireSecurityCode: Boolean? = null,
     val shippingDetailsId: String? = null,
     val merchantAccountId: String? = null,
-    val connectionOptions: Map<String, JsonElement>? = null
+    val connectionOptions: Map<String, JsonElement>? = null,
+    val buyer: Gr4vyBuyer? = null
 )
 
 @Serializable
