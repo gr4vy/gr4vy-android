@@ -9,19 +9,29 @@ import kotlinx.serialization.Serializable
 data class Gr4vyBuyer(
   val displayName: String? = null,
   val externalIdentifier: String? = null,
-  val billingDetails: Gr4vyBillingShippingDetails? = null,
-  val shippingDetails: Gr4vyBillingShippingDetails? = null
+  val billingDetails: Gr4vyBillingDetails? = null,
+  val shippingDetails: Gr4vyShippingDetails? = null
 ) : Parcelable
 
 @Serializable
 @Parcelize
-data class Gr4vyBillingShippingDetails(
+data class Gr4vyBillingDetails(
   val firstName: String? = null,
   val lastName: String? = null,
   val emailAddress: String? = null,
   val phoneNumber: String? = null,
   val address: Gr4vyAddress? = null,
   val taxId: Gr4vyTaxId? = null
+) : Parcelable
+
+@Serializable
+@Parcelize
+data class Gr4vyShippingDetails(
+  val firstName: String? = null,
+  val lastName: String? = null,
+  val emailAddress: String? = null,
+  val phoneNumber: String? = null,
+  val address: Gr4vyAddress? = null
 ) : Parcelable
 
 @Serializable

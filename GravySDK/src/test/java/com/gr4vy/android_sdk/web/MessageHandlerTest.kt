@@ -144,7 +144,7 @@ class MessageHandlerTest : TestCase() {
             buyerId = null,
             buyer = Gr4vyBuyer(
                 displayName = "Test buyer",
-                billingDetails = Gr4vyBillingShippingDetails(
+                billingDetails = Gr4vyBillingDetails(
                     firstName = "Ivy",
                     address = Gr4vyAddress(city = "London")
                 )
