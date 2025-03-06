@@ -165,7 +165,8 @@ data class UpdateCartItem(
     val productUrl: String?,
     val imageUrl: String?,
     val categories: List<String>?,
-    val productType: String?) {
+    val productType: String?,
+    val sellerCountry: String?) {
 
     companion object {
 
@@ -181,7 +182,8 @@ data class UpdateCartItem(
                 productUrl = item.productUrl,
                 imageUrl = item.imageUrl,
                 categories = item.categories,
-                productType = item.productType)
+                productType = item.productType,
+                sellerCountry = item.sellerCountry)
         }
     }
 }
