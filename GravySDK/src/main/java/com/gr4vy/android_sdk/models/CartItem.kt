@@ -17,4 +17,5 @@ data class CartItem(
     val productUrl: String? = null,
     val imageUrl: String? = null,
     val categories: List<String>? = null,
-    val productType: String? = null) : Parcelable
+    val productType: String? = null,
+    val sellerCountry: String? = null) : Parcelable
