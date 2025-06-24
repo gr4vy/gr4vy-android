@@ -119,6 +119,9 @@ class MainActivity : ComponentActivity(), Gr4vyResultHandler {
             is Gr4vyEvent.TransactionFailed -> {
                 print("Transaction Failed")
             }
+            is Gr4vyEvent.CardDetailsChanged -> {
+                print("Card Details Changed: bin=${event.bin}, cardType=${event.cardType}, scheme=${event.scheme}")
+            }
         }
     }
 }
