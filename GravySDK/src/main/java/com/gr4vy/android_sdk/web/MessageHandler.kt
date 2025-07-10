@@ -63,6 +63,15 @@ class MessageHandler(private val parameters: Parameters, private val isGooglePay
                     }
                 }
             }
+            is CardDetailsChangedMessage -> {
+                return Gr4vyMessageResult(
+                    Gr4vyEvent.CardDetailsChanged(
+                        bin = decodedMessage.data.bin,
+                        cardType = decodedMessage.data.cardType,
+                        scheme = decodedMessage.data.scheme,
+                    )
+                )
+            }
         }
     }
 }

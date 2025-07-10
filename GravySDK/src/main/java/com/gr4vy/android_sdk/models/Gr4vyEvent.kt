@@ -12,4 +12,11 @@ sealed class Gr4vyEvent : Parcelable, Gr4vyResultEventInterface {
         val status: String,
         val paymentMethodId: String?
     ) : Gr4vyEvent()
+
+    @Parcelize
+    class CardDetailsChanged(
+        val bin: String,
+        val cardType: String,
+        val scheme: String?
+    ): Gr4vyEvent()
 }

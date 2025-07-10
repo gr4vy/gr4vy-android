@@ -32,6 +32,13 @@ data class OpenLink(
 )
 
 @Serializable
+data class CardDetailsChanged(
+    @SerialName("bin") val bin: String,
+    @SerialName("cardType") val cardType: String,
+    @SerialName("scheme") val scheme: String?
+)
+
+@Serializable
 sealed class Message
 
 @Serializable
@@ -81,6 +88,13 @@ data class GooglePaySessionAuthorizedMessage(
     val type: String,
     val data: String,
 )
+
+@Serializable
+data class CardDetailsChangedMessage(
+    val type: String,
+    val channel: String,
+    val data: CardDetailsChanged,
+) : Message()
 
 @Serializable
 data class UpdateMessage(

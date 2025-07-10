@@ -296,4 +296,32 @@ class MessageHandlerTest : TestCase() {
 
         assertEquals("400", (gr4vyResult as Gr4vyEvent.TransactionFailed).status)
     }
+
+    @Test
+    fun testHandleMessageReturnsCardDetailsChanged() {
+        val expectedBin = "41111111"
+        val expectedCardType = "credit"
+        val expectedScheme = "visa"
+
+        val message =
+            "{" +
+                "\"type\": \"cardDetailsChanged\"," +
+                " \"channel\": \"123\"," +
+                " \"data\": {" +
+                        "\"bin\": \"$expectedBin\"," +
+                        "\"cardType\": \"$expectedCardType\"," +
+                        "\"scheme\": \"$expectedScheme\"" +
+                    "}" +
+            "}"
+
+        val messageHandler = MessageHandler(testParameters)
+
+        val messageHandlerResult = messageHandler.handleMessage(message)
+
+        val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result
+
+        assertEquals(expectedBin, (gr4vyResult as Gr4vyEvent.CardDetailsChanged).bin)
+        assertEquals(expectedCardType, (gr4vyResult as Gr4vyEvent.CardDetailsChanged).cardType)
+        assertEquals(expectedScheme, (gr4vyResult as Gr4vyEvent.CardDetailsChanged).scheme)
+    }
 }
