@@ -123,7 +123,8 @@ override fun onGr4vyResult(result: Gr4vyResult) {
 
 override fun onGr4vyEvent(event: Gr4vyEvent) {
         when(event) {
-            is Gr4vyResult.TransactionFailed -> print("Transaction Failed")
+            is Gr4vyEvent.TransactionFailed -> print("Transaction Failed")
+            is Gr4vyEvent.CardDetailsChanged -> print("Card Details Changed: bin=${event.bin}, cardType=${event.cardType}, scheme=${event.scheme}")
         }
     }
 ```
@@ -165,6 +166,18 @@ Returned when the transaction encounters an error.
   "transactionID": "8724fd24-5489-4a5d-90fd-0604df7d3b83",
   "status": "authorization_failed",
   "paymentMethodID": "17d57b9a-408d-49b8-9a97-9db382593003"
+}
+```
+
+#### `Gr4vyEvent.CardDetailsChanged`
+
+Returned when the card BIN changes in the form. It contains information on the inputted card, such as the BIN, card type and scheme.
+
+```json
+{
+  "bin": "42424242",
+  "scheme": "visa",
+  "cardType": "debit"
 }
 ```
 
