@@ -85,6 +85,7 @@ class Gr4vySDK(
      * @param connectionOptionsString An optional connection options list as a JSON string.
      * @param buyer An optional buyer object to allow guest checkout.
      * @param debugMode Enables debug mode.
+     * @param installmentCount An optional value that indicates the number of installments a buyer is required to make.
      */
     fun launch(
         context: Context,
@@ -113,6 +114,7 @@ class Gr4vySDK(
         connectionOptionsString: String? = null,
         buyer: @RawValue Gr4vyBuyer? = null,
         debugMode: Boolean = false,
+        installmentCount: Int? = null,
     ) {
 
         if (!isSupported()) {
@@ -147,6 +149,7 @@ class Gr4vySDK(
             merchantAccountId = merchantAccountId,
             connectionOptions = gr4vyMapConnectionOptions(connectionOptions, connectionOptionsString),
             buyer = buyer,
+            installmentCount = installmentCount,
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)

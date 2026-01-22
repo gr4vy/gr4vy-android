@@ -108,6 +108,8 @@ These are the options available in this SDK:
 
 | `debugMode`               | `Optional`          | `true`, `false`. Defaults to `false`, this prints to the console.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
+| `installmentCount`       | `Optional`          | `number` | An optional value that indicates the number of installments a buyer is required to make. |
+
 ### Step 3. Handle events from Gr4vy
 
 When you implement `Gr4vyResultHandler` you can handle the events emitted by Gr4vy like so:
