@@ -115,6 +115,7 @@ class Gr4vySDK(
         buyer: @RawValue Gr4vyBuyer? = null,
         debugMode: Boolean = false,
         installmentCount: Int? = null,
+        excludedMethods: List<String>? = null,
     ) {
 
         if (!isSupported()) {
@@ -150,6 +151,7 @@ class Gr4vySDK(
             connectionOptions = gr4vyMapConnectionOptions(connectionOptions, connectionOptionsString),
             buyer = buyer,
             installmentCount = installmentCount,
+            excludedMethods = excludedMethods,
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)
