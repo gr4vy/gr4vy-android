@@ -333,11 +333,9 @@ class MessageHandlerTest : TestCase() {
 
         val result = messageHandler.handleMessage(message)
 
-        assert(result is FrameReady)
+        assertTrue(result is FrameReady)
         val js = (result as FrameReady).js
-        assert(js.contains("\"excludedMethods\":[\"card\",\"paypal\"]")) {
-            "Expected excludedMethods in payload but got: $js"
-        }
+        assertTrue(js.contains("\"excludedMethods\":[\"card\",\"paypal\"]"))
     }
 
     @Test
@@ -348,10 +346,8 @@ class MessageHandlerTest : TestCase() {
 
         val result = messageHandler.handleMessage(message)
 
-        assert(result is FrameReady)
+        assertTrue(result is FrameReady)
         val js = (result as FrameReady).js
-        assert(!js.contains("excludedMethods")) {
-            "Expected excludedMethods to be absent but got: $js"
-        }
+        assertFalse(js.contains("excludedMethods"))
     }
 }
