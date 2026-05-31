@@ -57,7 +57,9 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.DISPATCH_ACCESS_TOKEN || github.token }}
-        run: npx auto@^11 shipit
+        # Pin to an exact version (matches the floor used by gr4vy-embed/secure-fields)
+        # for reproducible releases, consistent with the SHA-pinned actions above.
+        run: npx auto@11.3.6 shipit
 
       - name: Detect new release
         id: newtag
