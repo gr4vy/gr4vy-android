@@ -11,13 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
+      issues: write
     steps:
       - name: Checkout the code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          # PAT so the pushed tag + release can retrigger downstream workflows;
-          # full history + tags are needed for auto to compute the version.
-          token: ${{ secrets.DISPATCH_ACCESS_TOKEN }}
+          # Prefer the PAT so the pushed tag + release retrigger downstream workflows,
+          # but fall back to the built-in token so main stays green before it's set
+          # (tradeoff: tag pushes won't retrigger other workflows on the fallback).
+          # Full history + tags are needed for auto to compute the version.
+          token: ${{ secrets.DISPATCH_ACCESS_TOKEN || github.token }}
           fetch-depth: 0
 
       - name: Gradle Wrapper Validation
@@ -46,7 +50,7 @@ jobs:
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.DISPATCH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.DISPATCH_ACCESS_TOKEN || github.token }}
         run: npx auto@^11 shipit
 
       - name: Detect new release
@@ -64,10 +68,10 @@ jobs:
 
       - name: Build Release AAR
         if: steps.newtag.outputs.released == 'true'
-        run: ./gradlew assembleRelease
+        run: ./gradlew :GravySDK:assembleRelease
 
       - name: Attach AAR to release
         if: steps.newtag.outputs.released == 'true'
         env:
-          GH_TOKEN: ${{ secrets.DISPATCH_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.DISPATCH_ACCESS_TOKEN || github.token }}
         run: gh release upload "${{ steps.newtag.outputs.value }}" GravySDK/build/outputs/aar/*.aar --clobber
