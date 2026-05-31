@@ -31,6 +31,7 @@ data class Parameters(
     val connectionOptions: String? = null,
     val buyer: Gr4vyBuyer? = null,
     val installmentCount: Int? = null,
+    val excludedMethods: List<String>? = null,
 ) : Parcelable {
     init {
         require(token.isNotBlank()) { "Gr4vy token was blank" }

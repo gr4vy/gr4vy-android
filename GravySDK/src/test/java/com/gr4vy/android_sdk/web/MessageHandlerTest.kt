@@ -324,4 +324,30 @@ class MessageHandlerTest : TestCase() {
         assertEquals(expectedCardType, (gr4vyResult as Gr4vyEvent.CardDetailsChanged).cardType)
         assertEquals(expectedScheme, (gr4vyResult as Gr4vyEvent.CardDetailsChanged).scheme)
     }
+
+    @Test
+    fun testHandleMessageIncludesExcludedMethodsWhenSet() {
+        val parameters = testParameters.copy(excludedMethods = listOf("card", "paypal"))
+        val messageHandler = MessageHandler(parameters)
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val result = messageHandler.handleMessage(message)
+
+        assertTrue(result is FrameReady)
+        val js = (result as FrameReady).js
+        assertTrue(js.contains("\"excludedMethods\":[\"card\",\"paypal\"]"))
+    }
+
+    @Test
+    fun testHandleMessageOmitsExcludedMethodsWhenNull() {
+        val parameters = testParameters.copy(excludedMethods = null)
+        val messageHandler = MessageHandler(parameters)
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val result = messageHandler.handleMessage(message)
+
+        assertTrue(result is FrameReady)
+        val js = (result as FrameReady).js
+        assertFalse(js.contains("excludedMethods"))
+    }
 }

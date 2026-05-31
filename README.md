@@ -109,6 +109,7 @@ These are the options available in this SDK:
 | `debugMode`               | `Optional`          | `true`, `false`. Defaults to `false`, this prints to the console.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 | `installmentCount`       | `Optional`          | `number` | An optional value that indicates the number of installments a buyer is required to make. |
+| `excludedMethods`        | `Optional`          | `List<String>` | An optional list of payment methods to exclude. |
 
 ### Step 3. Handle events from Gr4vy
 

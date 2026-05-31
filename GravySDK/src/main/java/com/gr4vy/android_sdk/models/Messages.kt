@@ -133,7 +133,8 @@ data class UpdateMessage(
                     merchantAccountId = parameters.merchantAccountId,
                     connectionOptions = gr4vyConvertJSONStringToMap(parameters.connectionOptions),
                     buyer = parameters.buyer,
-                    installmentCount = parameters.installmentCount
+                    installmentCount = parameters.installmentCount,
+                    excludedMethods = parameters.excludedMethods
                 )
             )
         }
@@ -166,7 +167,8 @@ data class Update(
     val merchantAccountId: String? = null,
     val connectionOptions: Map<String, JsonElement>? = null,
     val buyer: Gr4vyBuyer? = null,
-    val installmentCount: Int? = null
+    val installmentCount: Int? = null,
+    val excludedMethods: List<String>? = null
 )
 
 @Serializable
