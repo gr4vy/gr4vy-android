@@ -1,17 +1,24 @@
 name: gr4vy-Android release workflow
 on:
   push:
-    tags:
-      - "*"
+    branches: [main]
   workflow_dispatch:
 jobs:
   release:
+    # Skip CI-only commits and forks; `auto shipit` itself no-ops unless the merged
+    # PR carried a release label (major/minor/patch), so every main push is safe.
+    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci') && github.repository_owner == 'gr4vy'"
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout the code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          # PAT so the pushed tag + release can retrigger downstream workflows;
+          # full history + tags are needed for auto to compute the version.
+          token: ${{ secrets.DISPATCH_ACCESS_TOKEN }}
+          fetch-depth: 0
 
       - name: Gradle Wrapper Validation
         uses: gradle/actions/wrapper-validation@48b5f213c81028ace310571dc5ec0fbbca0b2947 # v4
@@ -25,15 +32,42 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20.x
+
       - name: Test
         run: ./gradlew GravySDK:test
 
+      - name: Record latest tag (pre-release)
+        id: pretag
+        run: echo "value=$(git tag --sort=-v:refname | head -n1)" >> "$GITHUB_OUTPUT"
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.DISPATCH_ACCESS_TOKEN }}
+        run: npx auto@^11 shipit
+
+      - name: Detect new release
+        id: newtag
+        run: |
+          git fetch --tags --force --quiet
+          LATEST=$(git tag --sort=-v:refname | head -n1)
+          echo "value=$LATEST" >> "$GITHUB_OUTPUT"
+          if [ "$LATEST" != "${{ steps.pretag.outputs.value }}" ]; then
+            echo "released=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "released=false" >> "$GITHUB_OUTPUT"
+            echo "No new tag was created; skipping AAR build/upload."
+          fi
+
       - name: Build Release AAR
+        if: steps.newtag.outputs.released == 'true'
         run: ./gradlew assembleRelease
 
-      - name: Create Draft Release with Artifacts
-        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1
-        with:
-          artifacts: "GravySDK/build/outputs/aar/*.aar"
-          draft: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Attach AAR to release
+        if: steps.newtag.outputs.released == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DISPATCH_ACCESS_TOKEN }}
+        run: gh release upload "${{ steps.newtag.outputs.value }}" GravySDK/build/outputs/aar/*.aar --clobber
