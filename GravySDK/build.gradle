@@ -50,23 +50,32 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
 }
 
-// Version is derived from the latest git tag (e.g. "v1.14.0" -> "1.14.0"), which is
-// created automatically by `auto` on release. JitPack also uses the tag for the published
-// coordinate; this keeps locally built artifacts in sync. Falls back to 0.0.0 with no tags.
+// Version is derived from git tags (e.g. "v1.14.0" -> "1.14.0"). Tags are created
+// automatically by `auto` on release, and the release AAR is built from the tagged commit,
+// so release builds resolve a clean version. Non-tagged commits (local/dev builds) get a
+// "-SNAPSHOT" version derived from the last reachable tag so they never masquerade as a
+// release. Falls back to 0.0.0-SNAPSHOT when git or tags are unavailable.
+def gitTag = { String... args ->
+    def stdout = new ByteArrayOutputStream()
+    def result = exec {
+        commandLine(['git', 'describe', '--tags'] + (args as List))
+        standardOutput = stdout
+        errorOutput = new ByteArrayOutputStream()
+        ignoreExitValue = true
+    }
+    return result.exitValue == 0 ? stdout.toString().trim().replaceFirst(/^v/, '') : null
+}
 def sdkVersion = {
     try {
-        def stdout = new ByteArrayOutputStream()
-        def result = exec {
-            commandLine 'git', 'describe', '--tags', '--abbrev=0'
-            standardOutput = stdout
-            errorOutput = new ByteArrayOutputStream()
-            ignoreExitValue = true
-        }
-        def tag = stdout.toString().trim().replaceFirst(/^v/, '')
-        return (result.exitValue == 0 && tag) ? tag : '0.0.0'
+        // Exact tag on HEAD -> release version.
+        def exact = gitTag('--exact-match')
+        if (exact) return exact
+        // Otherwise a snapshot off the last reachable tag (or 0.0.0 if none).
+        def base = gitTag('--abbrev=0') ?: '0.0.0'
+        return "${base}-SNAPSHOT"
     } catch (Exception ignored) {
         // git not available (e.g. source distribution / minimal CI image)
-        return '0.0.0'
+        return '0.0.0-SNAPSHOT'
     }
 }()
 

@@ -26,6 +26,8 @@ repositories {
 }
 
 dependencies {
+  // Replace with the latest version (see the Version badge at the top of this README,
+  // or https://github.com/gr4vy/gr4vy-android/releases).
   implementation 'com.github.gr4vy:gr4vy-android:v1.14.0'
 }
 ```
@@ -197,8 +199,9 @@ Gr4vy SDKs. There is no manual version bump or tagging:
   the next version, creates the `vX.Y.Z` git tag, and publishes a GitHub Release with an
   auto-generated changelog. JitPack builds the artifact from the new tag.
 
-The SDK version is derived from the git tag at build time, so no version string needs to be
-edited by hand.
+The published SDK version is derived from the git tag at build time, so there is no version
+constant to maintain in the build files. (The Gradle install snippet above still pins an
+example version — bump it, or point readers to the latest release, as needed.)
 
 ## License
 
