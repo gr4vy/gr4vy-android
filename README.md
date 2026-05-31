@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.14.0-yellowgreen?style=for-the-badge)
+![Version](https://img.shields.io/github/v/release/gr4vy/gr4vy-android?style=for-the-badge&label=Version&color=yellowgreen)
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
 
@@ -26,6 +26,8 @@ repositories {
 }
 
 dependencies {
+  // Replace with the latest version (see the Version badge at the top of this README,
+  // or https://github.com/gr4vy/gr4vy-android/releases).
   implementation 'com.github.gr4vy:gr4vy-android:v1.14.0'
 }
 ```
@@ -187,12 +189,19 @@ Returned when the card BIN changes in the form. It contains information on the i
 ## Contribution
 
 ### Release
-The following steps should be done to release a new version:
 
-- Create a pull request that updates the version badge.
-- Create a tag locally of the desired version e.g. v1.2.3
-- Push the tag to the repository, this will initiate a Github action to create a draft release.
-- Publish the draft release
+Releases are automated with [`auto`](https://intuit.github.io/auto/), matching the other
+Gr4vy SDKs. There is no manual version bump or tagging:
+
+- Apply a release label to your pull request: `major`, `minor`, or `patch` (use
+  `skip-release` to ship a change without cutting a release).
+- When the PR is merged to `main`, the release workflow runs `auto shipit`, which computes
+  the next version, creates the `vX.Y.Z` git tag, and publishes a GitHub Release with an
+  auto-generated changelog. JitPack builds the artifact from the new tag.
+
+The published SDK version is derived from the git tag at build time, so there is no version
+constant to maintain in the build files. (The Gradle install snippet above still pins an
+example version — bump it, or point readers to the latest release, as needed.)
 
 ## License
 
