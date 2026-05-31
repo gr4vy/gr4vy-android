@@ -7,7 +7,13 @@ jobs:
   release:
     # Skip CI-only commits and forks; `auto shipit` itself no-ops unless the merged
     # PR carried a release label (major/minor/patch), so every main push is safe.
-    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci') && github.repository_owner == 'gr4vy'"
+    # head_commit only exists for push events, so the skip-ci checks are gated on that
+    # to keep manual workflow_dispatch runs working.
+    if: >-
+      github.repository_owner == 'gr4vy' &&
+      (github.event_name != 'push' ||
+       (!contains(github.event.head_commit.message, 'ci skip') &&
+        !contains(github.event.head_commit.message, 'skip ci')))
     runs-on: ubuntu-latest
     permissions:
       contents: write

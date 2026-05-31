@@ -54,15 +54,20 @@ dependencies {
 // created automatically by `auto` on release. JitPack also uses the tag for the published
 // coordinate; this keeps locally built artifacts in sync. Falls back to 0.0.0 with no tags.
 def sdkVersion = {
-    def stdout = new ByteArrayOutputStream()
-    def result = exec {
-        commandLine 'git', 'describe', '--tags', '--abbrev=0'
-        standardOutput = stdout
-        errorOutput = new ByteArrayOutputStream()
-        ignoreExitValue = true
+    try {
+        def stdout = new ByteArrayOutputStream()
+        def result = exec {
+            commandLine 'git', 'describe', '--tags', '--abbrev=0'
+            standardOutput = stdout
+            errorOutput = new ByteArrayOutputStream()
+            ignoreExitValue = true
+        }
+        def tag = stdout.toString().trim().replaceFirst(/^v/, '')
+        return (result.exitValue == 0 && tag) ? tag : '0.0.0'
+    } catch (Exception ignored) {
+        // git not available (e.g. source distribution / minimal CI image)
+        return '0.0.0'
     }
-    def tag = stdout.toString().trim().replaceFirst(/^v/, '')
-    return (result.exitValue == 0 && tag) ? tag : '0.0.0'
 }()
 
 afterEvaluate {
