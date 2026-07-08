@@ -151,7 +151,7 @@ data class Update(
     val currency: String,
     val buyerId: String?,
     val externalIdentifier: String? = null,
-    val store: String? = null,
+    val store: Gr4vyStore? = null,
     val display: String? = null,
     val intent: String? = null,
     val cartItems: List<UpdateCartItem>?,
