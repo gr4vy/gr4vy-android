@@ -58,7 +58,7 @@ afterEvaluate {
 
                 groupId = 'com.gr4vy'
                 artifactId = 'android-sdk'
-                version = '1.0.1'
+                version = '2.0.0'
             }
         }
     }

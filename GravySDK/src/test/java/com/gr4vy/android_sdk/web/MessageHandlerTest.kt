@@ -350,4 +350,71 @@ class MessageHandlerTest : TestCase() {
         val js = (result as FrameReady).js
         assertFalse(js.contains("excludedMethods"))
     }
+
+    @Test
+    fun testHandleMessageEncodesStoreAsBooleanWhenTrue() {
+        val parameters = testParameters.copy(store = Gr4vyStore.TRUE)
+        val messageHandler = MessageHandler(parameters)
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val result = messageHandler.handleMessage(message)
+
+        assertTrue(result is FrameReady)
+        val js = (result as FrameReady).js
+        assertTrue(js.contains("\"store\":true"))
+        assertFalse(js.contains("\"store\":\"true\""))
+    }
+
+    @Test
+    fun testHandleMessageEncodesStoreAsBooleanWhenFalse() {
+        val parameters = testParameters.copy(store = Gr4vyStore.FALSE)
+        val messageHandler = MessageHandler(parameters)
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val result = messageHandler.handleMessage(message)
+
+        assertTrue(result is FrameReady)
+        val js = (result as FrameReady).js
+        assertTrue(js.contains("\"store\":false"))
+        assertFalse(js.contains("\"store\":\"false\""))
+    }
+
+    @Test
+    fun testHandleMessageEncodesStoreAsStringWhenAsk() {
+        val parameters = testParameters.copy(store = Gr4vyStore.ASK)
+        val messageHandler = MessageHandler(parameters)
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val result = messageHandler.handleMessage(message)
+
+        assertTrue(result is FrameReady)
+        val js = (result as FrameReady).js
+        assertTrue(js.contains("\"store\":\"ask\""))
+    }
+
+    @Test
+    fun testHandleMessageEncodesStoreAsStringWhenPreselect() {
+        val parameters = testParameters.copy(store = Gr4vyStore.PRESELECT)
+        val messageHandler = MessageHandler(parameters)
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val result = messageHandler.handleMessage(message)
+
+        assertTrue(result is FrameReady)
+        val js = (result as FrameReady).js
+        assertTrue(js.contains("\"store\":\"preselect\""))
+    }
+
+    @Test
+    fun testHandleMessageOmitsStoreWhenNull() {
+        val parameters = testParameters.copy(store = null)
+        val messageHandler = MessageHandler(parameters)
+        val message = "{\"type\": \"frameReady\", \"channel\": \"123\"}"
+
+        val result = messageHandler.handleMessage(message)
+
+        assertTrue(result is FrameReady)
+        val js = (result as FrameReady).js
+        assertFalse(js.contains("\"store\""))
+    }
 }

@@ -15,7 +15,7 @@ data class Parameters(
     val country: String,
     val buyerId: String?,
     val externalIdentifier: String?,
-    val store: String?,
+    val store: Gr4vyStore?,
     val display: String?,
     val intent: String?,
     val cartItems: List<CartItem>?,

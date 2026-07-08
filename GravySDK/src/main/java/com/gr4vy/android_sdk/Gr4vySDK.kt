@@ -68,7 +68,7 @@ class Gr4vySDK(
      * @param country a short country code. For example "GB"
      * @param buyerId BuyerId is an optional Identifier that can be set to distinguish a customer
      * @param externalIdentifier An optional external identifier that can be supplied. This will automatically be associated to any resource created by Gr4vy and can subsequently be used to find a resource by that ID.
-     * @param store Explicitly store the payment method or ask the buyer, this is used when a buyerId is provided.
+     * @param store Explicitly store the payment method ([Gr4vyStore.TRUE]/[Gr4vyStore.FALSE]), ask the buyer ([Gr4vyStore.ASK]) or preselect it ([Gr4vyStore.PRESELECT]), this is used when a buyerId is provided.
      * @param display Filters the payment methods to show stored methods only, new payment methods only or methods that support tokenization.
      * @param intent Defines the intent of this API call. This determines the desired initial state of the transaction.
      * @param cartItems An optional array of cart item objects
@@ -97,7 +97,7 @@ class Gr4vySDK(
         country: String,
         buyerId: String? = null,
         externalIdentifier: String? = null,
-        store: String? = null,
+        store: Gr4vyStore? = null,
         display: String? = null,
         intent: String? = null,
         cartItems: List<CartItem>? = null,
