@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/gr4vy/gr4vy-android/actions/workflows/build.yaml/badge.svg?branch=main)
 
 ![Platforms](https://img.shields.io/badge/Platforms-Android-yellowgreen?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-2.0.0-yellowgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-2.1.0-yellowgreen?style=for-the-badge)
 
 Quickly embed Gr4vy in your Android app to store card details, authorize payments, and capture a transaction.
 
@@ -110,6 +110,7 @@ These are the options available in this SDK:
 
 | `installmentCount`       | `Optional`          | `number` | An optional value that indicates the number of installments a buyer is required to make. |
 | `excludedMethods`        | `Optional`          | `List<String>` | An optional list of payment methods to exclude. |
+| `approvalExpiresAt`      | `Optional`          | An optional datetime string (ISO 8601 format recommended) that sets the expiration date for transaction approval. If set to `null`, it is treated the same as if it were omitted. |
 
 ### Step 3. Handle events from Gr4vy
 

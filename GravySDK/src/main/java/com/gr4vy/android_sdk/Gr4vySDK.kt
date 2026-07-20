@@ -86,6 +86,7 @@ class Gr4vySDK(
      * @param buyer An optional buyer object to allow guest checkout.
      * @param debugMode Enables debug mode.
      * @param installmentCount An optional value that indicates the number of installments a buyer is required to make.
+     * @param approvalExpiresAt An optional ISO 8601 date-time string that sets the buyer's approval/expiry window for push payments.
      */
     fun launch(
         context: Context,
@@ -116,6 +117,7 @@ class Gr4vySDK(
         debugMode: Boolean = false,
         installmentCount: Int? = null,
         excludedMethods: List<String>? = null,
+        approvalExpiresAt: String? = null,
     ) {
 
         if (!isSupported()) {
@@ -152,6 +154,7 @@ class Gr4vySDK(
             buyer = buyer,
             installmentCount = installmentCount,
             excludedMethods = excludedMethods,
+            approvalExpiresAt = approvalExpiresAt,
         )
 
         val intent = Gr4vyActivity.createIntentWithParameters(context, parameters)
