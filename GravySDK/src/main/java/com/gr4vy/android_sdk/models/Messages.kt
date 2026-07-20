@@ -134,7 +134,8 @@ data class UpdateMessage(
                     connectionOptions = gr4vyConvertJSONStringToMap(parameters.connectionOptions),
                     buyer = parameters.buyer,
                     installmentCount = parameters.installmentCount,
-                    excludedMethods = parameters.excludedMethods
+                    excludedMethods = parameters.excludedMethods,
+                    approvalExpiresAt = parameters.approvalExpiresAt
                 )
             )
         }
@@ -168,7 +169,8 @@ data class Update(
     val connectionOptions: Map<String, JsonElement>? = null,
     val buyer: Gr4vyBuyer? = null,
     val installmentCount: Int? = null,
-    val excludedMethods: List<String>? = null
+    val excludedMethods: List<String>? = null,
+    val approvalExpiresAt: String? = null
 )
 
 @Serializable
