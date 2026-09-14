@@ -279,6 +279,36 @@ class MessageHandlerTest : TestCase() {
         val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result
 
         assertEquals(expectedStatus, (gr4vyResult as Gr4vyEvent.TransactionFailed).status)
+        assertEquals(null, gr4vyResult.responseCode)
+    }
+
+    @Test
+    fun testHandleMessageReturnsTransactionFailedWithResponseCodeWhenPresent() {
+
+        val expectedChannel = "123"
+        val expectedStatus = "authorization_declined"
+        val expectedResponseCode = "invalid_cvv"
+
+        val message =
+            "{" +
+                "\"type\": \"transactionCreated\"," +
+                " \"channel\": \"$expectedChannel\"," +
+                " \"data\": {" +
+                        "\"status\": \"$expectedStatus\"," +
+                        "\"id\": \"\"," +
+                        "\"paymentMethodID\": \"\"," +
+                        "\"responseCode\": \"$expectedResponseCode\"" +
+                    "}" +
+            "}"
+
+        val messageHandler = MessageHandler(testParameters)
+
+        val messageHandlerResult = messageHandler.handleMessage(message)
+
+        val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result as Gr4vyEvent.TransactionFailed
+
+        assertEquals(expectedStatus, gr4vyResult.status)
+        assertEquals(expectedResponseCode, gr4vyResult.responseCode)
     }
 
     @Test
