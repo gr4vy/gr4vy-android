@@ -12,7 +12,8 @@ data class Transaction(
     val status: String,
     @SerialName("id") val transactionId: String?,
     @SerialName("paymentMethodID") val paymentMethodId: String?,
-    @SerialName("paymentMethod") val paymentMethod: PaymentMethod?
+    @SerialName("paymentMethod") val paymentMethod: PaymentMethod?,
+    val responseCode: String? = null
 )
 
 @Serializable
