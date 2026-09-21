@@ -169,12 +169,9 @@ Returned when the transaction encounters an error.
 {
   "transactionID": "8724fd24-5489-4a5d-90fd-0604df7d3b83",
   "status": "authorization_failed",
-  "paymentMethodID": "17d57b9a-408d-49b8-9a97-9db382593003",
-  "responseCode": null
+  "paymentMethodID": "17d57b9a-408d-49b8-9a97-9db382593003"
 }
 ```
-
-`responseCode` is nullable — it's populated when the underlying web checkout message carries a decline/error reason code, and `null` otherwise.
 
 #### `Gr4vyEvent.CardDetailsChanged`
 

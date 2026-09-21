@@ -13,7 +13,7 @@ data class Transaction(
     @SerialName("id") val transactionId: String?,
     @SerialName("paymentMethodID") val paymentMethodId: String?,
     @SerialName("paymentMethod") val paymentMethod: PaymentMethod?,
-    val responseCode: String? = null
+    @SerialName("responseCode") val responseCode: String? = null
 )
 
 @Serializable
