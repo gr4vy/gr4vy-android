@@ -279,13 +279,43 @@ class MessageHandlerTest : TestCase() {
         val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result
 
         assertEquals(expectedStatus, (gr4vyResult as Gr4vyEvent.TransactionFailed).status)
+        assertNull(gr4vyResult.responseCode)
+    }
+
+    @Test
+    fun testHandleMessageReturnsTransactionFailedWithResponseCodeWhenPresent() {
+
+        val expectedChannel = "123"
+        val expectedStatus = "authorization_declined"
+        val expectedResponseCode = "invalid_cvv"
+
+        val message =
+            "{" +
+                "\"type\": \"transactionCreated\"," +
+                " \"channel\": \"$expectedChannel\"," +
+                " \"data\": {" +
+                        "\"status\": \"$expectedStatus\"," +
+                        "\"id\": \"\"," +
+                        "\"paymentMethodID\": \"\"," +
+                        "\"responseCode\": \"$expectedResponseCode\"" +
+                    "}" +
+            "}"
+
+        val messageHandler = MessageHandler(testParameters)
+
+        val messageHandlerResult = messageHandler.handleMessage(message)
+
+        val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result as Gr4vyEvent.TransactionFailed
+
+        assertEquals(expectedStatus, gr4vyResult.status)
+        assertEquals(expectedResponseCode, gr4vyResult.responseCode)
     }
 
     @Test
     fun testReturnsTransactionFailedWhenJsonMessageIsLenient() {
 
         val message =
-            "{\"channel\":\"123\",\"type\":\"transactionFailed\",\"data\":{\"status\":400,\"type\":\"error\",\"code\":\"bad_request\",\"message\":\"Request failed validation\",\"details\":[{\"location\":\"body\",\"message\":\"ensure this value has at least 5 characters\",\"pointer\":\"/statement_descriptor/name\",\"type\":\"value_error.any_str.min_length\"}]}}"
+            "{\"channel\":\"123\",\"type\":\"transactionFailed\",\"data\":{\"status\":400,\"type\":\"error\",\"code\":\"bad_request\",\"message\":\"Request failed validation\",\"responseCode\":\"bad_request\",\"details\":[{\"location\":\"body\",\"message\":\"ensure this value has at least 5 characters\",\"pointer\":\"/statement_descriptor/name\",\"type\":\"value_error.any_str.min_length\"}]}}"
 
 
         val messageHandler = MessageHandler(testParameters)
@@ -295,6 +325,7 @@ class MessageHandlerTest : TestCase() {
         val gr4vyResult = (messageHandlerResult as Gr4vyMessageResult).result
 
         assertEquals("400", (gr4vyResult as Gr4vyEvent.TransactionFailed).status)
+        assertEquals("bad_request", gr4vyResult.responseCode)
     }
 
     @Test

@@ -10,7 +10,8 @@ sealed class Gr4vyEvent : Parcelable, Gr4vyResultEventInterface {
     class TransactionFailed(
         val transactionId: String?,
         val status: String,
-        val paymentMethodId: String?
+        val paymentMethodId: String?,
+        val responseCode: String? = null
     ) : Gr4vyEvent()
 
     @Parcelize
